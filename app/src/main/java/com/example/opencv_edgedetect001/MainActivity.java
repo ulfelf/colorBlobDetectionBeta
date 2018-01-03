@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     int sampleAreatHeight = 15;
     int sampleAreatWidth = 15;
 
+    SoundPool soundPool;
+    IntStringVector intStringVector;
+    SoundKeeper soundKeeper;
+
 
     //int mySound; //Ett ID som berättar för .play vilket ljud som ska spelas upp
     boolean canPlaySound; //Håller koll på vår handler
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     int soundDelay; //Tidsfördröjning i milisekunder
 
 
-    private SoundInformation soundInformationnn;  //All sounds from "raw" reside in here.
+
 
     public enum detectedColor{DET_BLACK, DET_RED, DET_GREEN, DET_BLUE};
     public static final int DET_BLACK=0;
@@ -103,11 +107,13 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
         //Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
-        Intent franLoader = getIntent();
-        //this.soundInformationnn = (SoundInformation) franLoader.getSerializableExtra("soundInformationExtra");
-        this.soundInformationnn = SoundKeeper.getSoundInformation();
+
         readyToPlayToneFrameCounter=0;
         diagnosticToneCounter=0;
+        soundKeeper = new SoundKeeper();
+        soundPool = soundKeeper.getSoundPool();
+        intStringVector = soundKeeper.getIntStringVector();
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.HelloOpenCvView);
@@ -228,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
             soundIndex = 0;
         }
         //soundIndex = 8;
-        soundInformationnn.getSoundPool().play(soundInformationnn.getIntStringVector().getSoundPoolId(soundIndex), 1, 1, 1, 0, 1);
+        soundPool.play(intStringVector.getSoundPoolId(soundIndex),1,1,1,0,1);
     }
 
     //check if a color value from the camera is an expected value or not.
@@ -361,6 +367,24 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
         return meanColor;
     }
+
+    //ToDo: bara ett experiment, kanske ta bort innan leverans
+    //return the average color (Scalar(red, green, blue)) at KeyPoint kp.
+    private Scalar getSomethingElse(Mat in, KeyPoint centreOfRectangle, int widthOfSamplingArea, int heightOfSamplingArea){
+        Rect r = getRectangle(centreOfRectangle, widthOfSamplingArea, heightOfSamplingArea);
+        Mat huga = new Mat(in, r);
+        org.opencv.imgproc.Imgproc.GaussianBlur(huga, huga, new Size(5.0,5.0), 4.2);
+        //org.opencv.imgproc.Imgproc.blur(huga, huga, new Size(2.0,2.0));
+
+        //org.opencv.imgproc.Imgproc.calcHist();
+
+
+        Scalar meanColor = org.opencv.core.Core.mean(huga).clone();
+        org.opencv.imgproc.Imgproc.rectangle(in,r.tl(),r.br(),new Scalar(0, 0, 255));
+
+        return meanColor;
+    }
+
 
     //ToDo: safeguard from null values and such
     private Rect getRectangle(KeyPoint centerOfRectangle, int widthOfRectangle, int heightOfRectamgle){

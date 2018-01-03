@@ -1,6 +1,7 @@
 package com.example.opencv_edgedetect001;
 
 import android.app.Application;
+import android.media.SoundPool;
 
 /**
  * Created by blandfars on 2017-12-31.
@@ -11,7 +12,13 @@ import android.app.Application;
 //Brrr....
 //ToDo: eliminate the need of this horrible class. Implement parceable somewhere instead of this... thing.
 public class SoundKeeper extends Application {
-    public static SoundInformation soundInformation;
-    public static void setSoundInformation(SoundInformation arg){soundInformation  = arg;}
-    public static SoundInformation getSoundInformation(){return soundInformation;}
+    private static SoundPool soundPool;
+    private static IntStringVector intStringVector;
+    public SoundKeeper(SoundPool soundPool, IntStringVector intStringVector){
+        this.soundPool = soundPool;
+        this.intStringVector = intStringVector;
+    }
+    public SoundKeeper(){}
+    public SoundPool getSoundPool(){return soundPool;}
+    public IntStringVector getIntStringVector(){return intStringVector;}
 }

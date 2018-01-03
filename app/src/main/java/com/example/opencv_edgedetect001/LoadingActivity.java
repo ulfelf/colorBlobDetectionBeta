@@ -36,50 +36,16 @@ import org.w3c.dom.Text;
  * Created by blandfars on 2017-12-30.
  */
 
+//All sounds are loaded into a SoundPool in this activity
+//file name, resource ID and SoundPool ID are saved in an IntStringVector.
+//The SoundPool and the IntStringVector are stored in a SoundKeeper, that acts like an ugly global variable.
 public class LoadingActivity extends AppCompatActivity {
-
-
-
     public SoundPool soundPool; //Används för att spela upp flera ljud samtidigt
-    private SoundInformation soundInformation;  //All sounds from "raw" reside in here.
-    private SoundLoader soundLoaderr;           //this thingy loads sounds into a SoundPool that resides in a soundinformation
     private SoundKeeper soundKeeper;            //this ugly bugger uses a global static variable to carry information between activities. Parceable is a better approach, but difficult.
     private Context thisContext;                //A "mAppContext" might be abled to replace this thingy, read the manual.
+    IntStringVector intStringVector;
 
-    //Reciever for local implicit intents.
-    //Gets triggered when loading all the sounds is completed
-    private BroadcastReceiver aBroadcastRecieverForLoaderDone = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            ((TextView)findViewById(R.id.textView)).setText(R.string.loader_text_done);
-            ((ProgressBar)findViewById(R.id.progressBar)).setProgress(100);
-            //toTheBatMobile();
-            Intent goToMain = new Intent(thisContext, MainActivity.class);
-            //All is loaded, move to next activity
-            startActivity(goToMain);
-        }
-    };
 
-    //Reciever for local implicit intents.
-    //Recive intents for progressbar update.
-    private BroadcastReceiver aBroadcastRecieverForLoaderProgress = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int soundFilesReadSoFar = intent.getIntExtra("soundFilesReadSoFar",0);
-            int totalNumberOfSoundFilesToRead = intent.getIntExtra("totalNumberOfSoundFilesToRead", 0);
-            ((TextView)findViewById(R.id.textView)).setText(R.string.loader_text);
-            //workaround to get the progressbar animated. Common problem...
-            ((ProgressBar)findViewById(R.id.progressBar)).setProgress(0);
-            ((ProgressBar)findViewById(R.id.progressBar)).setMax(0);
-            //Set the progressbar, use new method if build version allows for it
-            ((ProgressBar)findViewById(R.id.progressBar)).setMax(totalNumberOfSoundFilesToRead);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                ((ProgressBar)findViewById(R.id.progressBar)).setProgress(soundFilesReadSoFar, true);
-            }else{
-                ((ProgressBar)findViewById(R.id.progressBar)).setProgress(soundFilesReadSoFar);
-            }
-        }
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,12 +53,8 @@ public class LoadingActivity extends AppCompatActivity {
         thisContext = this;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_loader);
-        //Register recievers for local implicit intents. They act a bit like EventHandlers, but they process intents instead of events.
-        LocalBroadcastManager.getInstance(this).registerReceiver(aBroadcastRecieverForLoaderDone, new IntentFilter("trigger_aBroadcastRecieverForLoader"));
-        LocalBroadcastManager.getInstance(this).registerReceiver(aBroadcastRecieverForLoaderProgress, new IntentFilter("trigger_aBroadcastRecieverForLoaderProgress"));
         //Save a config file for blob detection. Sadly, this is the only way to pass parametric information to blob detection
         FileTool.configFileSaviuor(this, getString(R.string.blobConfigFileName));
-        //--- --- --- --- Grejor från Fredrik --- --- --- ---
         AudioAttributes aa = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .setUsage(AudioAttributes.USAGE_GAME)
@@ -102,17 +64,26 @@ public class LoadingActivity extends AppCompatActivity {
                 .setMaxStreams(5)
                 .setAudioAttributes(aa)
                 .build();
-        //the information needed to load a sound from resources is stored in a hand made "SoundInformation"
-        soundInformation = new SoundInformation(this,1,this.soundPool);
-        //ToDo: Make soundInformation implement parceable instead of this global static nonsens. It's ugly. Ugly!!! (Ulf is not insane, he only gets these headaches from time to time).
-        //The soundKeeper is an ugly global static object that keeps the sound information between activities
-        soundKeeper = new SoundKeeper();
-        SoundKeeper.setSoundInformation(soundInformation);
-        soundLoaderr = new SoundLoader();
-        //"SoundInformation" is passed to a hand made AsyncTask, that loads all the sounds into a SoundPool that resides inside the Soundinformation.
-        soundLoaderr.execute(new SoundInformation[]{ soundInformation});
 
-        //--- --- --- --- Grejor från Fredrik --- --- --- ---
+        //This listener will be used later, but now is not the time.
+        SoundPool.OnLoadCompleteListener loadingDoneListener = new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                //Change the loading text message
+                ((TextView)findViewById(R.id.textView)).setText(R.string.loader_text_done);
+                //Update the progress bar
+                progressBarUpdate(10,10);
+                //put information into the SoundKeeper, it will carry the info to the next activity
+                soundKeeper = new SoundKeeper(soundPool, intStringVector);
+                //All is loaded, move to next activity
+                Intent goToMain = new Intent(thisContext, MainActivity.class);
+                startActivity(goToMain);
+            }
+        };
+        //ToDo: säkerställ att getAllRawResources() körts klart innan loadInUITHread(...)
+        //Load file name and reource ID into the IntStringVector
+        this.intStringVector = getAllRawResources();
+        loadInUITHread(soundPool, intStringVector, 1, loadingDoneListener);
     }
 
     @Override
@@ -128,6 +99,98 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    
+    //Load all sounds to the soundpool -do it in the UI thread (SoundPool.load(...) is thread safe)
+    protected boolean loadInUITHread(SoundPool soundPool, IntStringVector intStringVector, int priority, SoundPool.OnLoadCompleteListener loadingDoneListener) {
+        boolean returnValue = false;
+        int totalNumberOfSoundFilesToRead = 0;
+        int soundFilesReadSoFar = 0;
+        if((soundPool!=null) && (intStringVector!=null)) {
+            totalNumberOfSoundFilesToRead = intStringVector.length();
+            //make sure there is no listerer for loadingcomplete. We will activate a listener while we read the last of the sound files
+            soundPool.setOnLoadCompleteListener(null);
+            //Load the files into the soundpool
+            //put the sound-pool-id for each loaded sound into the IntStringVector
+            for (int i = 0; i < intStringVector.length(); i++) {
+                intStringVector.setSoundPoolId(i, soundPool.load(this, intStringVector.getResouceID(i), priority));
+                soundFilesReadSoFar++;
+                //update the progressbar
+                if (soundFilesReadSoFar % 3 == 0) {
+                    progressBarUpdate(totalNumberOfSoundFilesToRead, soundFilesReadSoFar);
+                }
+                if(i==intStringVector.length()-1){
+                    //This is the last sound-file to load, enable callback for loading complete:
+                    soundPool.setOnLoadCompleteListener(loadingDoneListener);
+                }
+            }
+            returnValue = true;
+        }else{
+            for(int i=0;i<500;i++){
+                System.out.println("soundInformation var NULL");
+            }
+        }
+        return returnValue;
+    }
+
+    private void progressBarUpdate(int totalNumberOfSoundFilesToRead, int soundFilesReadSoFar){
+        ((TextView)findViewById(R.id.textView)).setText(R.string.loader_text);
+        //workaround to get the progressbar animated. Common problem...
+        ((ProgressBar)findViewById(R.id.progressBar)).setProgress(0);
+        ((ProgressBar)findViewById(R.id.progressBar)).setMax(0);
+        //Set the progressbar, use new method if build version allows for it
+        ((ProgressBar)findViewById(R.id.progressBar)).setMax(totalNumberOfSoundFilesToRead);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            ((ProgressBar)findViewById(R.id.progressBar)).setProgress(soundFilesReadSoFar, true);
+        }else{
+            ((ProgressBar)findViewById(R.id.progressBar)).setProgress(soundFilesReadSoFar);
+        }
+    }
+
+    //Get resourceID and file name of all the files in the resourcefolder "raw"
+    //Do not save information about broken files.
+    public static IntStringVector getAllRawResources(){
+        java.lang.reflect.Field[] rawResources = R.raw.class.getFields();
+        int[] likelyResourceIds = new int[rawResources.length];
+        String[] likelyResourceNames = new String[rawResources.length];
+        //try getting all filename/resourceid pairs from the resourcefolder "raw"
+        //some of them might be broken.
+        for(int i=0;i<rawResources.length;i++) {
+            likelyResourceNames[i] = rawResources[i].getName();
+            try {
+                likelyResourceIds[i] = rawResources[i].getInt(rawResources[i]);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                likelyResourceIds[i] = -1;
+            }
+        }
+        //how many filename/resourceid combinations were broken?
+        int failedResourceReads = 0;
+        for(int i=0;i<likelyResourceIds.length;i++){
+            if(likelyResourceIds[i]==-1){
+                failedResourceReads++;
+            }
+        }
+        //filter out broken filename/resourceid combinations
+        int[] resourceIds = new int[rawResources.length-failedResourceReads];
+        String[] resourceNames = new String[rawResources.length-failedResourceReads];
+        int resourceCounter = 0;
+        for(int i=0;i<likelyResourceIds.length;i++){
+            if(likelyResourceIds[i]!=-1){
+                resourceIds[resourceCounter] = likelyResourceIds[i];
+                resourceNames[resourceCounter]  = likelyResourceNames[i];
+                resourceCounter++;
+            }
+        }
+        //save the non-broken pairs in a new IntStringVector
+        IntStringVector retVal = new IntStringVector();
+        for(int i=0;i<resourceIds.length;i++){
+            retVal.add(resourceIds[i], -1, resourceNames[i]);
+            //ToDo: ta bort felsökningsraden
+            Log.i("Ljudfil: "+resourceNames[i], String.valueOf(resourceIds[i]));
+        }
+        return retVal;
     }
 
 
