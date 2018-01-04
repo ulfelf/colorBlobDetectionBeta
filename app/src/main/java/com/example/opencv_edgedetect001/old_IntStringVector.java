@@ -1,17 +1,12 @@
 package com.example.opencv_edgedetect001;
 
-import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
  * Created by blandfars on 2017-12-29.
  */
 
 //A kind of vector where each index corresponds to two Integers and one String
-//Used for storing (resouceID, soundPool-ID, resourceFile-name) for each sound file loaded
-//Can be sent via an Intent using .putExtra("someName", someIntStringVector);
-public class IntStringVector implements Parcelable{
+//Used for storing (resouceID, soundPool-ID, resourceFile-name) for each sound file loaded.
+public class old_IntStringVector {
     private int[] resourceID;
     private int[] soundPoolID;
     private String[] resourceName;
@@ -20,8 +15,7 @@ public class IntStringVector implements Parcelable{
     String[] tone;
     private boolean[] isSharp;
 
-
-    public IntStringVector() {
+    public old_IntStringVector() {
         resourceID = new int[0];
         soundPoolID = new int[0];
         resourceName = new String[0];
@@ -30,9 +24,7 @@ public class IntStringVector implements Parcelable{
         tone = new String[0];
         isSharp = new boolean[0];
     }
-
-    //A copy contstructor
-    public IntStringVector(IntStringVector intStringVector) {
+    public old_IntStringVector(old_IntStringVector intStringVector) {
         resourceID = new int[intStringVector.length()];
         soundPoolID = new int[intStringVector.length()];
         resourceName = new String[intStringVector.length()];
@@ -51,9 +43,6 @@ public class IntStringVector implements Parcelable{
         }
     }
 
-
-    //Add an element in the IntStringVector. shortSoundName, octave, tone and isSharp will be
-    //derived from the resourceName.
     public void add(int resId, int soundId, String soundName){
         if(soundName==null){
             soundName = "";
@@ -172,7 +161,6 @@ public class IntStringVector implements Parcelable{
         }
     }
 
-    //return a substring terminated by (but not including) "until"
     private String subStringUntilChar(String soundName, char until){
         if(soundName!=null){
             if(soundName.length()>0){
@@ -184,45 +172,4 @@ public class IntStringVector implements Parcelable{
         }
         return "";
     }
-
-    //No filedescriptor, just return 0
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    //Wrap up all the data in a parcel
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeIntArray(resourceID);
-        parcel.writeIntArray(soundPoolID);
-        parcel.writeStringArray(resourceName);
-        parcel.writeStringArray(shortSoundName);
-        parcel.writeIntArray(octave);
-        parcel.writeStringArray(tone);
-        parcel.writeBooleanArray(isSharp);
-    }
-
-    //Construct an IntStringVector from a Parcel
-    public IntStringVector(Parcel parcel){
-        parcel.readIntArray(resourceID);
-        parcel.readIntArray(soundPoolID);
-        parcel.readStringArray(resourceName);
-        parcel.readStringArray(shortSoundName);
-        parcel.readIntArray(octave);
-        parcel.readStringArray(tone);
-        parcel.readBooleanArray(isSharp);
-    }
-
-    //Inherited overridden thingy, neccesary for parceability
-    public static final Parcelable.Creator<IntStringVector> CREATOR
-            = new Parcelable.Creator<IntStringVector>() {
-        public IntStringVector createFromParcel(Parcel in) {
-            return new IntStringVector(in);
-        }
-
-        public IntStringVector[] newArray(int size) {
-            return new IntStringVector[size];
-        }
-    };
 }
