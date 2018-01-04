@@ -73,7 +73,7 @@ public class FileTool {
                         someWriter.write("<format>3</format>\n");
                         //someWriter.write("<thresholdStep>10.</thresholdStep>\n");
                         someWriter.write("<thresholdStep>30.</thresholdStep>\n");
-                        someWriter.write("<minThreshold>50.</minThreshold>\n");
+                        someWriter.write("<minThreshold>30.</minThreshold>\n");
                         someWriter.write("<maxThreshold>220.</maxThreshold>\n");
                         someWriter.write("<minRepeatability>2</minRepeatability>\n");
                         someWriter.write("<minDistBetweenBlobs>10.</minDistBetweenBlobs>\n");

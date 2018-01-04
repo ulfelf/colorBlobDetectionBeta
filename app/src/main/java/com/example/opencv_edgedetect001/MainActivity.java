@@ -298,17 +298,31 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     }
 
 
+    Mat input_gray;
+    Mat input_color_toBeCloned;
+    Mat input_color;
+    Mat output_color;
+    MatOfKeyPoint matOfKeyPoint;
+    boolean noHitsThisFrame;
+    KeyPoint[] kps;
 
 
     //Detects blobs. If a blob enters the target rectangle (and if the target rectangle has
     //been empty for a while (readyToPlayToneFrameCounter_max number of frames), broadcast an Intent to play
     //a sound.
     public Mat detectAndMarkBlobs(CameraBridgeViewBase.CvCameraViewFrame inputFrame){
+        /*
         Mat input_gray = inputFrame.gray();
         Mat input_color_toBeCloned = inputFrame.rgba();
         Mat input_color = input_color_toBeCloned.clone();
         Mat output_color = input_color.clone();
         MatOfKeyPoint matOfKeyPoint = new MatOfKeyPoint();
+        */
+        input_gray = inputFrame.gray();
+        input_color_toBeCloned = inputFrame.rgba();
+        input_color = input_color_toBeCloned.clone();
+        output_color = input_color.clone();
+        matOfKeyPoint = new MatOfKeyPoint();
         //detect blobs and store the center points of each blob in "matOfKeyPoint"
         blobFeaturedetector.detect(input_gray, matOfKeyPoint);
         //Let the detection area be a rectangle "detectionArea")
@@ -317,8 +331,10 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
                 (int)(input_gray.height()/2-detectionAreatHeight/2),
                 (int)detectionAreatWidth,
                 (int)detectionAreatHeight);
-        boolean noHitsThisFrame = true;
-        KeyPoint[] kps = matOfKeyPoint.toArray();
+        //boolean noHitsThisFrame = true;
+        noHitsThisFrame = true;
+        //KeyPoint[] kps = matOfKeyPoint.toArray();
+        kps = matOfKeyPoint.toArray();
         Scalar colorAtKeyPoint;
         //iterate through the color blobs KeyPoints (center of mass)
         for(int i=0;i<kps.length;i++) {
@@ -357,6 +373,15 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         //Draw another rectangle letting the user know where the sampling area was at last color sample
         org.opencv.imgproc.Imgproc.rectangle(output_color, sampleArea.tl(), sampleArea.br(),new Scalar(0, 255, 0), 1,8,0);
 
+        //lämna uttryckligen tillbaka resurser
+        input_gray.release();
+        input_color_toBeCloned.release();
+        input_color.release();
+        matOfKeyPoint.release();
+        kps = null;
+
+
+
         return output_color;
     }
 
@@ -368,10 +393,9 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         Rect r = getRectangle(centreOfRectangle, widthOfSamplingArea, heightOfSamplingArea);
         Mat huga = new Mat(in, r);
         org.opencv.imgproc.Imgproc.GaussianBlur(huga, huga, new Size(5.0,5.0), 4.2);
-        //org.opencv.imgproc.Imgproc.blur(huga, huga, new Size(2.0,2.0));
         Scalar meanColor = org.opencv.core.Core.mean(huga).clone();
         org.opencv.imgproc.Imgproc.rectangle(in,r.tl(),r.br(),new Scalar(0, 0, 255));
-
+        huga.release();
         return meanColor;
     }
 
