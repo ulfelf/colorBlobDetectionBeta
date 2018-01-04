@@ -234,6 +234,13 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
             soundIndex = 0;
         }
         //soundIndex = 8;
+        String debugString = "Renpenis: "+
+                intStringVector.getShortSoundName(soundIndex) + ", " +
+                intStringVector.getOctave(soundIndex) + ", " +
+                intStringVector.getTone(soundIndex) + ", " +
+                intStringVector.isItSharp(soundIndex);
+        System.out.println(debugString);
+        ((TextView)findViewById(R.id.textFelt)).setText(((TextView)findViewById(R.id.textFelt)).getText()+debugString);
         soundPool.play(intStringVector.getSoundPoolId(soundIndex),1,1,1,0,1);
     }
 
