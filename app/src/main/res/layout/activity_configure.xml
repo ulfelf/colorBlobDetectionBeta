@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+        android:layout_width="368dp"
+        android:layout_height="399dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        double ,
+        double ,
+        double ,
+        double ,
+        double
+
+
+        <EditText
+            android:id="@+id/thresholdStep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="thresholdStep"
+            android:inputType="textPersonName"
+            android:text="@string/thresholdStepDefault"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="50dp" />
+
+        <EditText
+            android:id="@+id/minThreshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="minThreshold"
+            android:inputType="textPersonName"
+            android:text="@string/minThresholdDefault"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="50dp" />
+
+        <EditText
+            android:id="@+id/maxThreshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="maxThreshold"
+            android:inputType="textPersonName"
+            android:text="@string/maxThresholdDefault"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="50dp" />
+
+        <EditText
+            android:id="@+id/minDistBetweenBlobs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="minDistBetweenBlobs"
+            android:inputType="textPersonName"
+            android:text="@string/minDistBetweenBlobsDefault"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="50dp" />
+
+        <EditText
+            android:id="@+id/minArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="minArea"
+            android:inputType="textPersonName"
+            android:text="@string/minAreaDefault"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="50dp" />
+
+        <EditText
+            android:id="@+id/maxArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="maxArea"
+            android:inputType="textPersonName"
+            android:text="@string/maxAreaDefault"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="50dp" />
+
+        <Button
+            android:id="@+id/button_configure"
+            android:onClick="goToLoader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Do it" />
+
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

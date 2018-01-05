@@ -17,7 +17,7 @@ public class IntStringVector implements Parcelable{
     private String[] resourceName;
     private String[] shortSoundName;
     private int[] octave;
-    String[] tone;
+    private String[] tone;
     private boolean[] isSharp;
 
 
@@ -194,24 +194,35 @@ public class IntStringVector implements Parcelable{
     //Wrap up all the data in a parcel
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeIntArray(resourceID);
-        parcel.writeIntArray(soundPoolID);
+        parcel.writeInt(isSharp.length);
         parcel.writeStringArray(resourceName);
         parcel.writeStringArray(shortSoundName);
-        parcel.writeIntArray(octave);
         parcel.writeStringArray(tone);
         parcel.writeBooleanArray(isSharp);
+        parcel.writeIntArray(resourceID);
+        parcel.writeIntArray(soundPoolID);
+        parcel.writeIntArray(octave);
     }
 
     //Construct an IntStringVector from a Parcel
     public IntStringVector(Parcel parcel){
-        parcel.readIntArray(resourceID);
-        parcel.readIntArray(soundPoolID);
+        //nowhere in the documentation does it say that the recieving arrays have
+        //to be allocated first. But they do.
+        int len = parcel.readInt();
+        resourceID = new int[len];
+        soundPoolID = new int[len];
+        resourceName = new String[len];
+        shortSoundName = new String[len];
+        octave = new int[len];
+        tone = new String[len];
+        isSharp = new boolean[len];
         parcel.readStringArray(resourceName);
         parcel.readStringArray(shortSoundName);
-        parcel.readIntArray(octave);
         parcel.readStringArray(tone);
         parcel.readBooleanArray(isSharp);
+        parcel.readIntArray(resourceID);
+        parcel.readIntArray(soundPoolID);
+        parcel.readIntArray(octave);
     }
 
     //Inherited overridden thingy, neccesary for parceability

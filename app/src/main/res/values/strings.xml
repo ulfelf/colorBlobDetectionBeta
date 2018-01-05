@@ -3,4 +3,10 @@
     <string name="loader_text">I\'m loading the sounds now</string>
     <string name="loader_text_done">All sounds are now loaded</string>
     <string name="blobConfigFileName">blobConfig.xml</string>
+    <string name="thresholdStepDefault">30</string>
+    <string name="minThresholdDefault">30</string>
+    <string name="maxThresholdDefault">220</string>
+    <string name="minDistBetweenBlobsDefault">10</string>
+    <string name="minAreaDefault">1800</string>
+    <string name="maxAreaDefault">7000</string>
 </resources>

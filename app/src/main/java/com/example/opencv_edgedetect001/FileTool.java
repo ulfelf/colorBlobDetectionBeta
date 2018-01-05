@@ -37,6 +37,16 @@ public class FileTool {
     }
 
 
+    public static boolean configFileExists(Context context, String fileName){
+        boolean retVal = false;
+        String filePath = getAppSpecificDocumentPath(context, fileName);
+        File f;
+        f = new File(filePath);
+        if (f.exists()) {
+            retVal = true;
+        }
+        return retVal;
+    }
 
 
     //Saves a config file that can later be used by a org.opencv.features2d.FeatureDetector.read()
@@ -115,8 +125,117 @@ public class FileTool {
         return writingWentWell;
     }
 
+    /*
+    someWriter.write("<thresholdStep>30.</thresholdStep>\n");
+                        someWriter.write("<minThreshold>30.</minThreshold>\n");
+                        someWriter.write("<maxThreshold>220.</maxThreshold>\n");
+someWriter.write("<minArea>1800.</minArea>\n");
+                        someWriter.write("<maxArea>7000.</maxArea>\n");
+
+     */
 
 
+
+    //Saves a config file that can later be used by a org.opencv.features2d.FeatureDetector.read()
+    //Sadly, this is the ONLY way to get parameters to the function/object/thingy.
+    public static boolean configFileSaviuor(Context context, String fileName,
+                                            double thresholdStep,
+                                            double minThreshold,
+                                            double maxThreshold,
+                                            double minDistBetweenBlobs,
+                                            double minArea,
+                                            double maxArea) {
+        //If some dolt enters negative values: substitute for our own default values:
+        if(thresholdStep<0)
+            thresholdStep = 30;
+        if(minThreshold<0)
+            minThreshold=30;
+        if(maxThreshold<0)
+            maxThreshold=220;
+        if(minDistBetweenBlobs<0)
+            minDistBetweenBlobs=10;
+        if(minArea<0)
+            minArea=1800;
+        if(maxArea<0)
+            maxArea=7000;
+        //create an absolute path using the filename and some gadgetry
+        boolean writingWentWell = true;
+        String filePath = getAppSpecificDocumentPath(context, fileName);
+        if (filePath.length() > 3) {
+            //if file exist -erase it and create a new one.
+            //if it does not exist, just create it
+            File f;
+            //boolean fileIsReady = true;
+            f = new File(filePath);
+            if (f.exists()) {
+                writingWentWell = f.delete();
+            }
+            if (writingWentWell) {
+                try {
+                    writingWentWell = f.createNewFile();
+                } catch (IOException e) {
+                    writingWentWell = false;
+                    e.printStackTrace();
+                }
+            }
+            //Write the file
+            if (writingWentWell) {
+                try {
+                    FileOutputStream fout = new FileOutputStream(f);
+                    try {
+                        OutputStreamWriter someWriter = new OutputStreamWriter(fout, "UTF-8");
+                        someWriter.write("<?xml version=\"" + 1.0 + "\"?>\n");
+                        someWriter.write("<opencv_storage>\n");
+                        someWriter.write("<format>3</format>\n");
+                        someWriter.write("<thresholdStep>"+ doubleToString(thresholdStep) +"</thresholdStep>\n");
+                        someWriter.write("<minThreshold>"+ doubleToString(minThreshold) +"</minThreshold>\n");
+                        someWriter.write("<maxThreshold>"+ doubleToString(maxThreshold) +"</maxThreshold>\n");
+                        someWriter.write("<minRepeatability>2</minRepeatability>\n");
+                        someWriter.write("<minDistBetweenBlobs>"+ doubleToString(minDistBetweenBlobs) +"</minDistBetweenBlobs>\n");
+                        someWriter.write("<filterByColor>1</filterByColor>\n");
+                        someWriter.write("<blobColor>0</blobColor>\n");
+                        someWriter.write("<filterByArea>1</filterByArea>\n");
+                        someWriter.write("<minArea>"+ doubleToString(minArea) +"</minArea>\n");
+                        someWriter.write("<maxArea>"+ doubleToString(maxArea) +"</maxArea>\n");
+                        someWriter.write("<filterByCircularity>0</filterByCircularity>\n");
+                        someWriter.write("<minCircularity>8.0000001192092896e-01</minCircularity>\n");
+                        someWriter.write("<maxCircularity>3.4028234663852886e+38</maxCircularity>\n");
+                        someWriter.write("<filterByInertia>0</filterByInertia>\n");
+                        someWriter.write("<minInertiaRatio>1.0000000149011612e-01</minInertiaRatio>\n");
+                        someWriter.write("<maxInertiaRatio>3.4028234663852886e+38</maxInertiaRatio>\n");
+                        someWriter.write("<filterByConvexity>0</filterByConvexity>\n");
+                        someWriter.write("<minConvexity>9.4999998807907104e-01</minConvexity>\n");
+                        someWriter.write("<maxConvexity>3.4028234663852886e+38</maxConvexity>\n");
+                        someWriter.write("</opencv_storage>\n");
+                        someWriter.close();
+                    } catch (IOException e) {
+                        writingWentWell = false;
+                        e.printStackTrace();
+                    }
+                } catch (FileNotFoundException e) {
+                    writingWentWell = false;
+                    e.printStackTrace();
+                }
+            } else {
+                writingWentWell = false;
+                System.out.println("Somethign went wronk createing a file.");
+            }
+        }
+        return writingWentWell;
+    }
+
+
+    private static String doubleToString(double theDouble){
+        int wholes = (int)Math.floor(theDouble);
+        int deci = (int)Math.floor((theDouble-wholes)*10);
+        int centi = (int)Math.floor((theDouble-wholes-deci)*100);
+        int milli = (int)Math.floor((theDouble-wholes-deci-centi)*1000);
+        String retVal = Integer.toString(wholes) + ".";
+        if((deci!=0) || (centi!=0) || (milli!=0)){
+            retVal = retVal + Integer.toString(deci)+Integer.toString(centi)+Integer.toString(milli);
+        }
+        return retVal;
+    }
 
        /*
        From the original configuration file org.opencv.features2d.FeatureDetector.write():

@@ -54,7 +54,9 @@ public class LoadingActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_loader);
         //Save a config file for blob detection. Sadly, this is the only way to pass parametric information to blob detection
-        FileTool.configFileSaviuor(this, getString(R.string.blobConfigFileName));
+        if(!FileTool.configFileExists(this, getString (R.string.blobConfigFileName))) {
+            FileTool.configFileSaviuor(this, getString(R.string.blobConfigFileName));
+        }
         AudioAttributes aa = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .setUsage(AudioAttributes.USAGE_GAME)
@@ -74,9 +76,12 @@ public class LoadingActivity extends AppCompatActivity {
                 //Update the progress bar
                 progressBarUpdate(10,10);
                 //put information into the SoundKeeper, it will carry the info to the next activity
-                soundKeeper = new SoundKeeper(soundPool, intStringVector);
+                //ulfulf
+                //soundKeeper = new SoundKeeper(soundPool, intStringVector);
+                soundKeeper = new SoundKeeper(soundPool);
                 //All is loaded, move to next activity
                 Intent goToMain = new Intent(thisContext, MainActivity.class);
+                goToMain.putExtra("theIntStringVector", intStringVector);
                 startActivity(goToMain);
             }
         };
@@ -101,7 +106,7 @@ public class LoadingActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    
+
     //Load all sounds to the soundpool -do it in the UI thread (SoundPool.load(...) is thread safe)
     protected boolean loadInUITHread(SoundPool soundPool, IntStringVector intStringVector, int priority, SoundPool.OnLoadCompleteListener loadingDoneListener) {
         boolean returnValue = false;

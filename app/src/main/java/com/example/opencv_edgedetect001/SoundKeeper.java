@@ -13,6 +13,16 @@ import android.media.SoundPool;
 //ToDo: eliminate the need of this horrible class. Implement parceable somewhere instead of this... thing.
 public class SoundKeeper extends Application {
     private static SoundPool soundPool;
+
+    public SoundKeeper(SoundPool soundPool){
+        this.soundPool = soundPool;
+    }
+    public SoundKeeper(){}
+    public SoundPool getSoundPool(){return soundPool;}
+
+
+    /*
+    private static SoundPool soundPool;
     private static IntStringVector intStringVector;
     public SoundKeeper(SoundPool soundPool, IntStringVector intStringVector){
         this.soundPool = soundPool;
@@ -21,4 +31,5 @@ public class SoundKeeper extends Application {
     public SoundKeeper(){}
     public SoundPool getSoundPool(){return soundPool;}
     public IntStringVector getIntStringVector(){return intStringVector;}
+    */
 }

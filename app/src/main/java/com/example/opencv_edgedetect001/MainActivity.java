@@ -74,7 +74,17 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     Runnable mRunnable; //????
     int soundDelay; //Tidsfördröjning i milisekunder
 
+    public void goToConfigActivity(View view) {
+        Intent goToConfig = new Intent(this, ConfigureActivity.class);
+        goToConfig.putExtra("theIntStringVector", intStringVector);
+        startActivity(goToConfig);
+    }
 
+    @Override
+    public void onBackPressed() {
+        //ToDo: what happends when back button is pressed?
+        return;
+    }
 
 
     public enum detectedColor{DET_BLACK, DET_RED, DET_GREEN, DET_BLUE};
@@ -108,12 +118,15 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         //Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
 
+
         readyToPlayToneFrameCounter=0;
         diagnosticToneCounter=0;
         soundKeeper = new SoundKeeper();
         soundPool = soundKeeper.getSoundPool();
-        intStringVector = soundKeeper.getIntStringVector();
-
+        //ulfulf
+        //intStringVector = soundKeeper.getIntStringVector();
+        Intent getenGoran = getIntent();
+        intStringVector = getenGoran.getParcelableExtra("theIntStringVector");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.HelloOpenCvView);
@@ -281,17 +294,17 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         //is it black?
         if(theSum<=35){
             return detectedColor.DET_BLACK;
-        //Om k_r == 100	Om 4<k_g<8		Om 8<k_b<20
+            //Om k_r == 100	Om 4<k_g<8		Om 8<k_b<20
         }//else if((k_r == 100)&&(4<k_g) && (k_g<8) && (8<k_b) && (k_b>20)){
-         else if((k_r == 100)){
+        else if((k_r == 100)){
             return detectedColor.DET_RED;
-        //Om k_g == 100	Om 1<k_r<6		Om 60<k_b<75
+            //Om k_g == 100	Om 1<k_r<6		Om 60<k_b<75
         }//else if((k_g == 100)&&(1<k_r) && (k_r<6) && (60<k_b) && (k_b>75)){
-         else if((k_g == 100)){
+        else if((k_g == 100)){
             return detectedColor.DET_GREEN;
-        //Om k_b == 100	Om 20<k_r<33		Om 48<k_g<60
+            //Om k_b == 100	Om 20<k_r<33		Om 48<k_g<60
         }//else if((k_b == 100)&&(20<k_r) && (k_r<33) && (48<k_g) && (k_g>60)){
-          else if((k_b == 100)){
+        else if((k_b == 100)){
             return detectedColor.DET_BLUE;
         }
         return detectedColor.DET_BLACK;
@@ -358,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
                     org.opencv.imgproc.Imgproc.circle(output_color, kps[i].pt, 8, new Scalar(255, 0, 0), 2);
                 }
                 readyToPlayToneFrameCounter=0;
-            //If there is no blob inside the detection area:
+                //If there is no blob inside the detection area:
             } else {
                 readyToPlayToneFrameCounter++;
                 if (readyToPlayToneFrameCounter >= readyToPlayToneFrameCounter_max) {
