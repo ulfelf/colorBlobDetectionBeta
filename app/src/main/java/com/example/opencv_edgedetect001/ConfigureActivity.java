@@ -30,7 +30,7 @@ public class ConfigureActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //ToDo: what happends when back button is pressed?
-        Intent goToMain = new Intent(this, MainActivity.class);
+        Intent goToMain = new Intent(this, PlayActivity.class);
         goToMain.putExtra("theIntStringVector", intStringVector);
         startActivity(goToMain);
     }
@@ -78,7 +78,7 @@ public class ConfigureActivity extends AppCompatActivity {
             startActivity(goToLoader);
         }else{
             //Bad values. Skip it, and go back to main.
-            Intent goToMain = new Intent(this, MainActivity.class);
+            Intent goToMain = new Intent(this, PlayActivity.class);
             goToMain.putExtra("theIntStringVector", intStringVector);
             startActivity(goToMain);
         }

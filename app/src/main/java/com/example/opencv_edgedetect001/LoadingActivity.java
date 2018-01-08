@@ -80,7 +80,7 @@ public class LoadingActivity extends AppCompatActivity {
                 //soundKeeper = new SoundKeeper(soundPool, intStringVector);
                 soundKeeper = new SoundKeeper(soundPool);
                 //All is loaded, move to next activity
-                Intent goToMain = new Intent(thisContext, MainActivity.class);
+                Intent goToMain = new Intent(thisContext, PlayActivity.class);
                 goToMain.putExtra("theIntStringVector", intStringVector);
                 startActivity(goToMain);
             }

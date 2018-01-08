@@ -9,4 +9,9 @@
     <string name="minDistBetweenBlobsDefault">10</string>
     <string name="minAreaDefault">1800</string>
     <string name="maxAreaDefault">7000</string>
+    <string name="instruction">Hover phone over colors to play</string>
+    <string name="title_activity_balloon">balloonActivity</string>
+    <string name="cancel_setup">cancel_setup</string>
+    <string name="accept_setup">accept_setup</string>
+    <string name="done_setup">done_setup</string>
 </resources>
