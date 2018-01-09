@@ -18,9 +18,10 @@ public class MenuActivity extends AppCompatActivity {
     ImageButton play;
     ImageButton instrument;
     ImageButton tutorial;
+    IntStringVector[] soundBankCollection;
+    IntStringVector isv_AllAvaliSounds;
 
     FrameLayout achtungFrame;
-    IntStringVector intStringVector;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,7 +29,18 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         Intent getenGoran = getIntent();
-        intStringVector = getenGoran.getParcelableExtra("theIntStringVector");
+        isv_AllAvaliSounds = getenGoran.getParcelableExtra("theIntStringVector");
+        soundBankCollection = new IntStringVector[10];
+        soundBankCollection[0] = getenGoran.getParcelableExtra("soundbank_0");
+        soundBankCollection[1] = getenGoran.getParcelableExtra("soundbank_1");
+        soundBankCollection[2] = getenGoran.getParcelableExtra("soundbank_2");
+        soundBankCollection[3] = getenGoran.getParcelableExtra("soundbank_3");
+        soundBankCollection[4] = getenGoran.getParcelableExtra("soundbank_4");
+        soundBankCollection[5] = getenGoran.getParcelableExtra("soundbank_5");
+        soundBankCollection[6] = getenGoran.getParcelableExtra("soundbank_6");
+        soundBankCollection[7] = getenGoran.getParcelableExtra("soundbank_7");
+        soundBankCollection[8] = getenGoran.getParcelableExtra("soundbank_8");
+        soundBankCollection[9] = getenGoran.getParcelableExtra("soundbank_9");
 
         achtung = findViewById(R.id.ib_attribution);
         play = findViewById(R.id.ib_play);
@@ -53,12 +65,50 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void playMusic(View view) {
-
+        Intent goToMain = new Intent(this, PlayActivity.class);
+        goToMain.putExtra("theIntStringVector", isv_AllAvaliSounds);
+        goToMain.putExtra("soundbank_0",soundBankCollection[0]);
+        goToMain.putExtra("soundbank_1",soundBankCollection[1]);
+        goToMain.putExtra("soundbank_2",soundBankCollection[2]);
+        goToMain.putExtra("soundbank_3",soundBankCollection[3]);
+        goToMain.putExtra("soundbank_4",soundBankCollection[4]);
+        goToMain.putExtra("soundbank_5",soundBankCollection[5]);
+        goToMain.putExtra("soundbank_6",soundBankCollection[6]);
+        goToMain.putExtra("soundbank_7",soundBankCollection[7]);
+        goToMain.putExtra("soundbank_8",soundBankCollection[8]);
+        goToMain.putExtra("soundbank_9",soundBankCollection[9]);
+        startActivity(goToMain);
     }
 
     public void loadInstruments(View view) {
+        Intent goToMain = new Intent(this, InstrumentsActivity.class);
+        goToMain.putExtra("theIntStringVector", isv_AllAvaliSounds);
+        goToMain.putExtra("soundbank_0",soundBankCollection[0]);
+        goToMain.putExtra("soundbank_1",soundBankCollection[1]);
+        goToMain.putExtra("soundbank_2",soundBankCollection[2]);
+        goToMain.putExtra("soundbank_3",soundBankCollection[3]);
+        goToMain.putExtra("soundbank_4",soundBankCollection[4]);
+        goToMain.putExtra("soundbank_5",soundBankCollection[5]);
+        goToMain.putExtra("soundbank_6",soundBankCollection[6]);
+        goToMain.putExtra("soundbank_7",soundBankCollection[7]);
+        goToMain.putExtra("soundbank_8",soundBankCollection[8]);
+        goToMain.putExtra("soundbank_9",soundBankCollection[9]);
+        startActivity(goToMain);
     }
 
     public void loadTutorial(View view) {
+        Intent goToMain = new Intent(this, TutorialActivity.class);
+        goToMain.putExtra("theIntStringVector", isv_AllAvaliSounds);
+        goToMain.putExtra("soundbank_0",soundBankCollection[0]);
+        goToMain.putExtra("soundbank_1",soundBankCollection[1]);
+        goToMain.putExtra("soundbank_2",soundBankCollection[2]);
+        goToMain.putExtra("soundbank_3",soundBankCollection[3]);
+        goToMain.putExtra("soundbank_4",soundBankCollection[4]);
+        goToMain.putExtra("soundbank_5",soundBankCollection[5]);
+        goToMain.putExtra("soundbank_6",soundBankCollection[6]);
+        goToMain.putExtra("soundbank_7",soundBankCollection[7]);
+        goToMain.putExtra("soundbank_8",soundBankCollection[8]);
+        goToMain.putExtra("soundbank_9",soundBankCollection[9]);
+        startActivity(goToMain);
     }
 }
