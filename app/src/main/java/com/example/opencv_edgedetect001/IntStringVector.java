@@ -19,6 +19,7 @@ public class IntStringVector implements Parcelable{
     private int[] octave;
     private String[] tone;
     private boolean[] isSharp;
+    private int[] detectColor;
 
 
     public IntStringVector() {
@@ -29,6 +30,7 @@ public class IntStringVector implements Parcelable{
         octave = new int[0];
         tone = new String[0];
         isSharp = new boolean[0];
+        detectColor = new int[0];
     }
 
     //A copy contstructor
@@ -40,6 +42,7 @@ public class IntStringVector implements Parcelable{
         octave = new int[intStringVector.length()];
         tone = new String[intStringVector.length()];
         isSharp = new boolean[intStringVector.length()];
+        detectColor = new int[intStringVector.length()];
         for(int i=0;i<intStringVector.length();i++){
             resourceID[i] = intStringVector.getResouceID(i);
             soundPoolID[i] = intStringVector.getSoundPoolId(i);
@@ -48,6 +51,7 @@ public class IntStringVector implements Parcelable{
             octave[i] = intStringVector.getOctave(i);
             tone[i] = intStringVector.getTone(i);
             isSharp[i] = intStringVector.isItSharp(i);
+            detectColor[i] = intStringVector.getDetectColor(i);
         }
     }
 
@@ -65,6 +69,7 @@ public class IntStringVector implements Parcelable{
         int[] tempOctave = octave.clone();
         String[] tempTone = tone.clone();
         boolean[] TempIsSharp = isSharp.clone();
+        int[]  tempDetectColor = detectColor.clone();
 
         resourceID = new int[tempResId.length+1];
         soundPoolID = new int[tempResId.length+1];
@@ -73,6 +78,7 @@ public class IntStringVector implements Parcelable{
         octave = new int[tempResId.length+1];
         tone = new String[tempResId.length+1];
         isSharp = new boolean[tempResId.length+1];
+        detectColor = new int[tempResId.length+1];
 
         for(int i=0;i<tempResId.length;i++){
             resourceID[i] = tempResId[i];
@@ -82,6 +88,7 @@ public class IntStringVector implements Parcelable{
             octave[i] = tempOctave[i];
             tone[i] = tempTone[i];
             isSharp[i] = TempIsSharp[i];
+            detectColor[i] = tempDetectColor[i];
         }
         resourceID[tempResId.length] = resId;
         soundPoolID[tempResId.length] = soundId;
@@ -91,12 +98,15 @@ public class IntStringVector implements Parcelable{
         tone[tempResId.length] = "E";
         isSharp[tempResId.length] = false;
         getShortSoundNameOctaveIsSharp(tempResId.length);
+        detectColor[tempResId.length] = 0;
     }
 
     public int length(){
         return resourceID.length;
     }
-
+    public void setResourceID(int index, int resourceID){
+        this.resourceID[index] = resourceID;
+    }
     public int getResouceID(int index){return this.resourceID[index];}
     public boolean setSoundPoolId(int index, int soundID){
         if(this.soundPoolID.length>index){
@@ -106,12 +116,15 @@ public class IntStringVector implements Parcelable{
             return false;
         }
     }
+
     public int getSoundPoolId(int index){return this.soundPoolID[index];}
     public String getResouceName(int index){return this.resourceName[index];}
     public String getShortSoundName(int index){return this.shortSoundName[index];}
     public int getOctave(int index){return this.octave[index];}
     public String getTone(int index){return this.tone[index];}
     public boolean isItSharp(int index){return this.isSharp[index];}
+    public void setDetectColor(int index, int detecColor){this.detectColor[index] = detecColor;}
+    public int getDetectColor(int index){return this.detectColor[index];}
 
 
     //interpret the resource file name, for example "shortbass_1_a_s", and
@@ -202,6 +215,7 @@ public class IntStringVector implements Parcelable{
         parcel.writeIntArray(resourceID);
         parcel.writeIntArray(soundPoolID);
         parcel.writeIntArray(octave);
+        parcel.writeIntArray(detectColor);
     }
 
     //Construct an IntStringVector from a Parcel
@@ -216,6 +230,7 @@ public class IntStringVector implements Parcelable{
         octave = new int[len];
         tone = new String[len];
         isSharp = new boolean[len];
+        detectColor = new int[len];
         parcel.readStringArray(resourceName);
         parcel.readStringArray(shortSoundName);
         parcel.readStringArray(tone);
@@ -223,6 +238,7 @@ public class IntStringVector implements Parcelable{
         parcel.readIntArray(resourceID);
         parcel.readIntArray(soundPoolID);
         parcel.readIntArray(octave);
+        parcel.readIntArray(detectColor);
     }
 
     //Inherited overridden thingy, neccesary for parceability
@@ -236,4 +252,42 @@ public class IntStringVector implements Parcelable{
             return new IntStringVector[size];
         }
     };
+
+
+    //ToDo: används denna över huvud taget?
+    public void completesomethingraw(){
+        java.lang.reflect.Field[] rawResources = R.raw.class.getFields();
+        int[] likelyResourceIds = new int[rawResources.length];
+        String[] likelyResourceNames = new String[rawResources.length];
+        //try getting all filename/resourceid pairs from the resourcefolder "raw"
+        //some of them might be broken.
+        for(int i=0;i<rawResources.length;i++) {
+            likelyResourceNames[i] = rawResources[i].getName();
+            try {
+                likelyResourceIds[i] = rawResources[i].getInt(rawResources[i]);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                likelyResourceIds[i] = -1;
+            }
+        }
+        //how many filename/resourceid combinations were broken?
+        int failedResourceReads = 0;
+        for(int i=0;i<likelyResourceIds.length;i++){
+            if(likelyResourceIds[i]==-1){
+                failedResourceReads++;
+            }
+        }
+        //filter out broken filename/resourceid combinations
+        int[] resourceIds = new int[rawResources.length-failedResourceReads];
+        String[] resourceNames = new String[rawResources.length-failedResourceReads];
+        int resourceCounter = 0;
+        for(int i=0;i<likelyResourceIds.length;i++){
+            if(likelyResourceIds[i]!=-1){
+                resourceIds[resourceCounter] = likelyResourceIds[i];
+                resourceNames[resourceCounter]  = likelyResourceNames[i];
+                resourceCounter++;
+            }
+        }
+    }
+
 }

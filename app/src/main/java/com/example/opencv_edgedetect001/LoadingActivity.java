@@ -85,9 +85,13 @@ public class LoadingActivity extends AppCompatActivity {
                 startActivity(goToMain);
             }
         };
+        //If no user preference soundbanks exist: write default ones
+        if(!FileTool.doTheSoundBankFilesExist(this)){
+            FileTool.writeDefaultSoundBankFiles(this);
+        }
         //ToDo: säkerställ att getAllRawResources() körts klart innan loadInUITHread(...)
         //Load file name and reource ID into the IntStringVector
-        this.intStringVector = getAllRawResources();
+        this.intStringVector = FileTool.getAllRawResources();
         loadInUITHread(soundPool, intStringVector, 1, loadingDoneListener);
     }
 
@@ -153,50 +157,7 @@ public class LoadingActivity extends AppCompatActivity {
         }
     }
 
-    //Get resourceID and file name of all the files in the resourcefolder "raw"
-    //Do not save information about broken files.
-    public static IntStringVector getAllRawResources(){
-        java.lang.reflect.Field[] rawResources = R.raw.class.getFields();
-        int[] likelyResourceIds = new int[rawResources.length];
-        String[] likelyResourceNames = new String[rawResources.length];
-        //try getting all filename/resourceid pairs from the resourcefolder "raw"
-        //some of them might be broken.
-        for(int i=0;i<rawResources.length;i++) {
-            likelyResourceNames[i] = rawResources[i].getName();
-            try {
-                likelyResourceIds[i] = rawResources[i].getInt(rawResources[i]);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                likelyResourceIds[i] = -1;
-            }
-        }
-        //how many filename/resourceid combinations were broken?
-        int failedResourceReads = 0;
-        for(int i=0;i<likelyResourceIds.length;i++){
-            if(likelyResourceIds[i]==-1){
-                failedResourceReads++;
-            }
-        }
-        //filter out broken filename/resourceid combinations
-        int[] resourceIds = new int[rawResources.length-failedResourceReads];
-        String[] resourceNames = new String[rawResources.length-failedResourceReads];
-        int resourceCounter = 0;
-        for(int i=0;i<likelyResourceIds.length;i++){
-            if(likelyResourceIds[i]!=-1){
-                resourceIds[resourceCounter] = likelyResourceIds[i];
-                resourceNames[resourceCounter]  = likelyResourceNames[i];
-                resourceCounter++;
-            }
-        }
-        //save the non-broken pairs in a new IntStringVector
-        IntStringVector retVal = new IntStringVector();
-        for(int i=0;i<resourceIds.length;i++){
-            retVal.add(resourceIds[i], -1, resourceNames[i]);
-            //ToDo: ta bort felsökningsraden
-            Log.i("Ljudfil: "+resourceNames[i], String.valueOf(resourceIds[i]));
-        }
-        return retVal;
-    }
+
 
 
 }

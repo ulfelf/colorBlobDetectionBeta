@@ -84,10 +84,10 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
 
 
     public enum detectedColor{DET_BLACK, DET_RED, DET_GREEN, DET_BLUE};
-    public static final int DET_BLACK=0;
-    public static final int DET_RED=1;
-    public static final int DET_GREEN=2;
-    public static final int DET_BLUE=3;
+    public static final int DET_BLACK=3;
+    public static final int DET_RED=2;
+    public static final int DET_GREEN=1;
+    public static final int DET_BLUE=0;
 
 
     //Reciever for local implicit intents.
