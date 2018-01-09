@@ -1,5 +1,6 @@
 package com.example.opencv_edgedetect001;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,10 +20,13 @@ public class MenuActivity extends AppCompatActivity {
     ImageButton tutorial;
 
     FrameLayout achtungFrame;
+    IntStringVector intStringVector;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent getenGoran = getIntent();
+        intStringVector = getenGoran.getParcelableExtra("theIntStringVector");
         achtung = findViewById(R.id.ib_attribution);
         play = findViewById(R.id.ib_play);
         instrument = findViewById(R.id.ib_instruments);
