@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
@@ -104,7 +105,7 @@ public class LoadingActivity extends AppCompatActivity {
                 IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[8]);
                 IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[9]);
                 //All is loaded, move to next activity
-                Intent goToMain = new Intent(thisContext, PlayActivity.class);
+                Intent goToMain = new Intent(thisContext, MenuActivity.class);
                 goToMain.putExtra("theIntStringVector", isv_AllAvaliSounds);
                 goToMain.putExtra("soundbank_0",soundBankCollection[0]);
                 goToMain.putExtra("soundbank_1",soundBankCollection[1]);

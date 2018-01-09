@@ -25,8 +25,11 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_menu);
+
         Intent getenGoran = getIntent();
         intStringVector = getenGoran.getParcelableExtra("theIntStringVector");
+
         achtung = findViewById(R.id.ib_attribution);
         play = findViewById(R.id.ib_play);
         instrument = findViewById(R.id.ib_instruments);
@@ -44,31 +47,18 @@ public class MenuActivity extends AppCompatActivity {
                 {
                     achtungFrame.setVisibility(View.INVISIBLE);
                 }
-
-
             }
         });
 
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO Öppna själva "spelet" aktiviteten
-            }
-        });
+    }
 
-        instrument.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO Öppna "Instrument" aktiviteten
-            }
-        });
+    public void playMusic(View view) {
 
-        tutorial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO Öppna "Tutorial" aktiviteten
-            }
-        });
+    }
 
+    public void loadInstruments(View view) {
+    }
+
+    public void loadTutorial(View view) {
     }
 }
