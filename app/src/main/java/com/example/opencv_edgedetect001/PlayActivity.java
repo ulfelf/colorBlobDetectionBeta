@@ -60,7 +60,8 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
     int sampleAreatWidth = 15;
 
     SoundPool soundPool;
-    IntStringVector intStringVector;
+    IntStringVector isv_AllAvaliSounds;
+    IntStringVector[] soundBankCollection;
     SoundKeeper soundKeeper;
 
 
@@ -72,7 +73,7 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
 
     public void goToConfigActivity(View view) {
         Intent goToConfig = new Intent(this, ConfigureActivity.class);
-        goToConfig.putExtra("theIntStringVector", intStringVector);
+        goToConfig.putExtra("theIntStringVector", isv_AllAvaliSounds);
         startActivity(goToConfig);
     }
 
@@ -113,16 +114,50 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
 
         //Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
-
-
         readyToPlayToneFrameCounter=0;
         diagnosticToneCounter=0;
         soundKeeper = new SoundKeeper();
         soundPool = soundKeeper.getSoundPool();
         //ulfulf
         //intStringVector = soundKeeper.getIntStringVector();
+        soundBankCollection = new IntStringVector[10];
         Intent getenGoran = getIntent();
-        intStringVector = getenGoran.getParcelableExtra("theIntStringVector");
+        isv_AllAvaliSounds = getenGoran.getParcelableExtra("theIntStringVector");
+        soundBankCollection[0] = getenGoran.getParcelableExtra("soundbank_0");
+        soundBankCollection[1] = getenGoran.getParcelableExtra("soundbank_1");
+        soundBankCollection[2] = getenGoran.getParcelableExtra("soundbank_2");
+        soundBankCollection[3] = getenGoran.getParcelableExtra("soundbank_3");
+        soundBankCollection[4] = getenGoran.getParcelableExtra("soundbank_4");
+        soundBankCollection[5] = getenGoran.getParcelableExtra("soundbank_5");
+        soundBankCollection[6] = getenGoran.getParcelableExtra("soundbank_6");
+        soundBankCollection[7] = getenGoran.getParcelableExtra("soundbank_7");
+        soundBankCollection[8] = getenGoran.getParcelableExtra("soundbank_8");
+        soundBankCollection[9] = getenGoran.getParcelableExtra("soundbank_9");
+
+        for(int i=0;i<soundBankCollection.length;i++){
+            for(int u=0;u<soundBankCollection[i].length();u++) {
+                System.out.println(
+                        "SoBan[" + i + "]: " +
+                                soundBankCollection[i].getShortSoundName(u) + ", " +
+                                soundBankCollection[i].getOctave(u) + ", " +
+                                soundBankCollection[i].getTone(u) + ", " +
+                                soundBankCollection[i].isItSharp(u) + ", " +
+                                soundBankCollection[i].getResouceID(u)
+                );
+            }
+        }
+        for(int u=0;u<isv_AllAvaliSounds.length();u++) {
+            System.out.println(
+                    "AvailSounds: " +
+                            isv_AllAvaliSounds.getShortSoundName(u) + ", " +
+                            isv_AllAvaliSounds.getOctave(u) + ", " +
+                            isv_AllAvaliSounds.getTone(u) + ", " +
+                            isv_AllAvaliSounds.isItSharp(u) + ", " +
+                            isv_AllAvaliSounds.getResouceID(u)
+            );
+        }
+
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_play);
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.HelloOpenCvView);
@@ -244,13 +279,13 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         }
         //soundIndex = 8;
         String debugString = "Renpenis: "+
-                intStringVector.getShortSoundName(soundIndex) + ", " +
-                intStringVector.getOctave(soundIndex) + ", " +
-                intStringVector.getTone(soundIndex) + ", " +
-                intStringVector.isItSharp(soundIndex);
+                isv_AllAvaliSounds.getShortSoundName(soundIndex) + ", " +
+                isv_AllAvaliSounds.getOctave(soundIndex) + ", " +
+                isv_AllAvaliSounds.getTone(soundIndex) + ", " +
+                isv_AllAvaliSounds.isItSharp(soundIndex);
         System.out.println(debugString);
         ((TextView)findViewById(R.id.textFelt)).setText(((TextView)findViewById(R.id.textFelt)).getText()+debugString);
-        soundPool.play(intStringVector.getSoundPoolId(soundIndex),1,1,1,0,1);
+        soundPool.play(isv_AllAvaliSounds.getSoundPoolId(soundIndex),1,1,1,0,1);
     }
 
     //check if a color value from the camera is an expected value or not.

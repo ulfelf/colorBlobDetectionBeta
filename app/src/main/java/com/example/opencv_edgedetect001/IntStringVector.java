@@ -253,7 +253,35 @@ public class IntStringVector implements Parcelable{
         }
     };
 
+    public static void getCorrespondingSoundPoolIDs(IntStringVector source, IntStringVector dest){
+        if(source==null){
+            System.out.println("Source var null");
+        }
+        if(dest==null){
+            System.out.println("Dest var null");
+        }
+        boolean foundAMatch = false;
+        int defaultResourceID = 0;
+        if(source.length()>0){
+            defaultResourceID = source.getResouceID(0);
+        }
+        for(int destCounter=0;destCounter<dest.length();destCounter++){
+            foundAMatch=false;
+            for(int sourceCounter=0;sourceCounter<source.length();sourceCounter++){
+                if(dest.getResouceName(destCounter).equals(source.getResouceName(sourceCounter))){
+                    dest.setResourceID(destCounter, source.getResouceID(sourceCounter));
+                    foundAMatch = true;
+                    break;
+                }
+            }
+            if(!foundAMatch){
+                dest.setResourceID(destCounter, defaultResourceID);
+            }
+        }
+    }
 
+
+    /*
     //ToDo: används denna över huvud taget?
     public void completesomethingraw(){
         java.lang.reflect.Field[] rawResources = R.raw.class.getFields();
@@ -289,5 +317,6 @@ public class IntStringVector implements Parcelable{
             }
         }
     }
+    */
 
 }
