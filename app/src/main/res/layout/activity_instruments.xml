@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#d2e3ff">
 
     <android.support.constraint.Guideline
         android:id="@+id/cycleOne_guide_left"
@@ -66,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95"  />
+        app:layout_constraintGuide_percent="0.95" />
 
     <com.gigamole.infinitecycleviewpager.VerticalInfiniteCycleViewPager xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/first_cycler"
@@ -109,6 +110,21 @@
         app:layout_constraintTop_toTopOf="@+id/cycle_guide_top" />
 
     <ImageButton
+        android:id="@+id/ib_cancel"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/cancel"
+        app:layout_constraintBottom_toTopOf="@+id/choice_buttons_guide_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109" />
+
+    <ImageButton
         android:id="@+id/ib_accept"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -116,25 +132,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/check"
         app:layout_constraintBottom_toTopOf="@+id/choice_buttons_guide_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/cycleOne_guide_right"
-        app:layout_constraintStart_toStartOf="@+id/cycleOne_guide_left"
-        app:layout_constraintTop_toTopOf="@+id/cycle_guide_bottom"
-        app:srcCompat="@mipmap/ic_launcher_round" />
-
-    <ImageButton
-        android:id="@+id/ib_cancel"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/choice_buttons_guide_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/cycleTwo_guide_right"
-        app:layout_constraintStart_toStartOf="@+id/cycleTwo_guide_left"
-        app:layout_constraintTop_toTopOf="@+id/cycle_guide_bottom"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.603" />
 
     <ImageButton
         android:id="@+id/ib_load"
@@ -144,11 +147,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/open_archive2"
         app:layout_constraintBottom_toTopOf="@+id/operator_buttons_guide_bottom"
         app:layout_constraintEnd_toStartOf="@+id/cycleOne_guide_right"
         app:layout_constraintStart_toStartOf="@+id/cycleOne_guide_left"
-        app:layout_constraintTop_toTopOf="@+id/operator_buttons_guide_top"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:layout_constraintTop_toTopOf="@+id/operator_buttons_guide_top" />
 
     <ImageButton
         android:id="@+id/ib_save"
@@ -158,9 +161,169 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/save"
         app:layout_constraintBottom_toTopOf="@+id/operator_buttons_guide_bottom"
         app:layout_constraintEnd_toStartOf="@+id/cycleTwo_guide_right"
         app:layout_constraintStart_toStartOf="@+id/cycleTwo_guide_left"
-        app:layout_constraintTop_toTopOf="@+id/operator_buttons_guide_top"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:layout_constraintTop_toTopOf="@+id/operator_buttons_guide_top" />
+
+    <ImageView
+        android:id="@+id/doublearrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.207"
+        app:srcCompat="@drawable/doublearrow" />
+
+    <ImageView
+        android:id="@+id/img_background_circles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/background_circles" />
+
+    <ImageButton
+        android:id="@+id/playbutton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/play2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.885" />
+
+    <FrameLayout
+        android:id="@+id/invisibleFrame"
+        android:layout_width="200dp"
+        android:layout_height="43dp"
+        android:background="#ffffff"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="48dp"
+        tools:layout_editor_absoluteY="172dp">
+
+        <TextView
+            android:id="@+id/tutorialText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/tutorial_instrument_1"
+            android:textAlignment="center" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/img_tut_scrollFinger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/operator_buttons_guide_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.312"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.222"
+        app:srcCompat="@drawable/cat" />
+
+    <Button
+        android:id="@+id/b_tut_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="OK"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/invisibleFrame"
+        tools:layout_editor_absoluteX="104dp" />
+
+    <ImageView
+        android:id="@+id/img_tut_clickonsound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.876"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.207"
+        app:srcCompat="@drawable/cat" />
+
+    <ImageView
+        android:id="@+id/img_tut_clicktosave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.83"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.971"
+        app:srcCompat="@drawable/cat" />
+
+    <ImageView
+        android:id="@+id/img_tut_clicktoplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.576"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.885"
+        app:srcCompat="@drawable/cat" />
+
+    <ImageView
+        android:id="@+id/img_tut_acceptinstrument"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.383"
+        app:srcCompat="@drawable/cat" />
+
 </android.support.constraint.ConstraintLayout>

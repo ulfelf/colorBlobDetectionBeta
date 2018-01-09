@@ -9,9 +9,15 @@
     <string name="minDistBetweenBlobsDefault">10</string>
     <string name="minAreaDefault">1800</string>
     <string name="maxAreaDefault">7000</string>
-    <string name="instruction">Hover phone over colors to play</string>
-    <string name="title_activity_balloon">balloonActivity</string>
     <string name="cancel_setup">cancel_setup</string>
     <string name="accept_setup">accept_setup</string>
     <string name="done_setup">done_setup</string>
+    <string name="instruction">After pressing the Play button \n Hover phone over colors \n to play a sound!</string>
+    <string name="tutorial_instrument_1">Scroll up and down \n to match a Color with a Sound!</string>
+    <string name="tutorial_instrument_2">Click on the instrument \n to listen to it!</string>
+    <string name="tutorial_instrument_3">Click here \n to accept your new sound!</string>
+    <string name="tutorial_instrument_4">Click here \n to save your work!</string>
+    <string name="tutorial_instrument_5">Click here \n to start playing!</string>
+    <string name="achtung">Icons made by http://www.freepik.com</string>
+    <string name="title_activity_balloon">balloonActivity</string>
 </resources>
