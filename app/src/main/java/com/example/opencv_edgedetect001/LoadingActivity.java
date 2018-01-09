@@ -43,7 +43,8 @@ public class LoadingActivity extends AppCompatActivity {
     public SoundPool soundPool; //Används för att spela upp flera ljud samtidigt
     private SoundKeeper soundKeeper;            //this ugly bugger uses a global static variable to carry information between activities. Parceable is a better approach, but difficult.
     private Context thisContext;                //A "mAppContext" might be abled to replace this thingy, read the manual.
-    IntStringVector intStringVector;
+    private IntStringVector isv_AllAvaliSounds;
+    private IntStringVector[] soundBankCollection;
 
 
 
@@ -79,9 +80,42 @@ public class LoadingActivity extends AppCompatActivity {
                 //ulfulf
                 //soundKeeper = new SoundKeeper(soundPool, intStringVector);
                 soundKeeper = new SoundKeeper(soundPool);
+
+                soundBankCollection[0] = FileTool.readSoundBank(thisContext, "soundbank_001.xml");
+                soundBankCollection[1] = FileTool.readSoundBank(thisContext, "soundbank_002.xml");
+                soundBankCollection[2] = FileTool.readSoundBank(thisContext, "soundbank_003.xml");
+                soundBankCollection[3] = FileTool.readSoundBank(thisContext, "soundbank_004.xml");
+                soundBankCollection[4] = FileTool.readSoundBank(thisContext, "soundbank_005.xml");
+                soundBankCollection[5] = FileTool.readSoundBank(thisContext, "soundbank_006.xml");
+                soundBankCollection[6] = FileTool.readSoundBank(thisContext, "soundbank_007.xml");
+                soundBankCollection[7] = FileTool.readSoundBank(thisContext, "soundbank_008.xml");
+                soundBankCollection[8] = FileTool.readSoundBank(thisContext, "soundbank_009.xml");
+                soundBankCollection[9] = FileTool.readSoundBank(thisContext, "soundbank_010.xml");
+
+
+                IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[0]);
+                IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[1]);
+                IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[2]);
+                IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[3]);
+                IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[4]);
+                IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[5]);
+                IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[6]);
+                IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[7]);
+                IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[8]);
+                IntStringVector.getCorrespondingSoundPoolIDs(isv_AllAvaliSounds, soundBankCollection[9]);
                 //All is loaded, move to next activity
                 Intent goToMain = new Intent(thisContext, PlayActivity.class);
-                goToMain.putExtra("theIntStringVector", intStringVector);
+                goToMain.putExtra("theIntStringVector", isv_AllAvaliSounds);
+                goToMain.putExtra("soundbank_0",soundBankCollection[0]);
+                goToMain.putExtra("soundbank_1",soundBankCollection[1]);
+                goToMain.putExtra("soundbank_2",soundBankCollection[2]);
+                goToMain.putExtra("soundbank_3",soundBankCollection[3]);
+                goToMain.putExtra("soundbank_4",soundBankCollection[4]);
+                goToMain.putExtra("soundbank_5",soundBankCollection[5]);
+                goToMain.putExtra("soundbank_6",soundBankCollection[6]);
+                goToMain.putExtra("soundbank_7",soundBankCollection[7]);
+                goToMain.putExtra("soundbank_8",soundBankCollection[8]);
+                goToMain.putExtra("soundbank_9",soundBankCollection[9]);
                 startActivity(goToMain);
             }
         };
@@ -89,10 +123,15 @@ public class LoadingActivity extends AppCompatActivity {
         if(!FileTool.doTheSoundBankFilesExist(this)){
             FileTool.writeDefaultSoundBankFiles(this);
         }
-        //ToDo: säkerställ att getAllRawResources() körts klart innan loadInUITHread(...)
+        soundBankCollection = new IntStringVector[10];
+
+
+        //ToDo: kanske säkerställa att getAllRawResources() körts klart innan loadInUITHread(...)
         //Load file name and reource ID into the IntStringVector
-        this.intStringVector = FileTool.getAllRawResources();
-        loadInUITHread(soundPool, intStringVector, 1, loadingDoneListener);
+        this.isv_AllAvaliSounds = FileTool.getAllRawResources();
+        loadInUITHread(soundPool, isv_AllAvaliSounds, 1, loadingDoneListener);
+        //ladda ljudbankarna
+        //få in soundpoolID på något sätt? Genom isv_AllAvaliSounds!!! Gör det i callback?
     }
 
     @Override
