@@ -65,8 +65,6 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
     IntStringVector[] soundBankCollection;
     SoundKeeper soundKeeper;
 
-
-    //int mySound; //Ett ID som berättar för .play vilket ljud som ska spelas upp
     boolean canPlaySound; //Håller koll på vår handler
     Handler mHandler; //Håller koll på tidtagaruret
     Runnable mRunnable; //????
@@ -132,19 +130,15 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
     };
 
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         //Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
         readyToPlayToneFrameCounter=0;
         diagnosticToneCounter=0;
         soundKeeper = new SoundKeeper();
         soundPool = soundKeeper.getSoundPool();
-        //ulfulf
-        //intStringVector = soundKeeper.getIntStringVector();
+        //get information from the intent
         soundBankCollection = new IntStringVector[10];
         Intent intent = getIntent();
         isv_AllAvaliSounds = intent.getParcelableExtra("theIntStringVector");
@@ -271,15 +265,7 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         return detectAndMarkBlobs(inputFrame);
     }
 
-    /*
-    public void playTone(String aString){
-        Toast.makeText(this, aString, Toast.LENGTH_SHORT).show();
-    }
-    */
-
     //This function plays different sounds depending on color values
-    //It needs some work.
-    //ToDo: talk to SwedFred
     public void playASound(double red, double green, double blue){
         int colorIndex = 0;
         if(detectAColor(red, green, blue, 5.0)==detectedColor.DET_RED){
@@ -292,29 +278,13 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         }else{
             colorIndex = 3;
         }
-        /*
-        int activeSoundBank = 0;
-        for(int i=0;i<soundBankCollection[activeSoundBank].length();i++){
-            if(colorIndex==soundBankCollection[activeSoundBank].getDetectColor(i)){
-                soundBankNumber = soundBankCollection[activeSoundBank].getDetectColor(i);
-            }
-        }
-        */
-        //soundPool.play(isv_AllAvaliSounds.getSoundPoolId(soundBankNumber),1,1,1,0,1);
+        //Play the sound associated (by the user) by the color
         soundPool.play(soundBankCollection[0].getSoundPoolId(colorIndex),1,1,1,0,1);
-                /*String debugString = "Renpenis: "+
-                isv_AllAvaliSounds.getShortSoundName(soundIndex) + ", " +
-                isv_AllAvaliSounds.getOctave(soundIndex) + ", " +
-                isv_AllAvaliSounds.getTone(soundIndex) + ", " +
-                isv_AllAvaliSounds.isItSharp(soundIndex);
-        System.out.println(debugString);
-        ((TextView)findViewById(R.id.textFelt)).setText(((TextView)findViewById(R.id.textFelt)).getText()+debugString);*/
     }
 
 
     //check if a color value from the camera is an expected value or not.
     //This function needs a lot of work.
-    //ToDo: talk to SwedFred
     private detectedColor detectAColor (double cameraRed, double cameraGreen, double cameraBlue, double marginOfSomething){
         /*
         double[] kRed = new double[]{100,100,4,8,8,20};
@@ -379,13 +349,6 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
     //been empty for a while (readyToPlayToneFrameCounter_max number of frames), broadcast an Intent to play
     //a sound.
     public Mat detectAndMarkBlobs(CameraBridgeViewBase.CvCameraViewFrame inputFrame){
-        /*
-        Mat input_gray = inputFrame.gray();
-        Mat input_color_toBeCloned = inputFrame.rgba();
-        Mat input_color = input_color_toBeCloned.clone();
-        Mat output_color = input_color.clone();
-        MatOfKeyPoint matOfKeyPoint = new MatOfKeyPoint();
-        */
         input_gray = inputFrame.gray();
         input_color_toBeCloned = inputFrame.rgba();
         input_color = input_color_toBeCloned.clone();
@@ -399,9 +362,7 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
                 (int)(input_gray.height()/2-detectionAreatHeight/2),
                 (int)detectionAreatWidth,
                 (int)detectionAreatHeight);
-        //boolean noHitsThisFrame = true;
         noHitsThisFrame = true;
-        //KeyPoint[] kps = matOfKeyPoint.toArray();
         kps = matOfKeyPoint.toArray();
         Scalar colorAtKeyPoint;
         //iterate through the color blobs KeyPoints (center of mass)
@@ -449,13 +410,6 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         kps = null;
         return output_color;
     }
-
-
-
-
-
-
-
 
 
     //return the average color (Scalar(red, green, blue)) at KeyPoint kp.
