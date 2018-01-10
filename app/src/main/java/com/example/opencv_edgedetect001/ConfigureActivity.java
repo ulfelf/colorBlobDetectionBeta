@@ -14,11 +14,12 @@ import org.w3c.dom.Text;
  * Created by blandfars on 2018-01-05.
  */
 
+//Primitive configuration tool
+//Not user-friendly, demo purposes only
 public class ConfigureActivity extends AppCompatActivity {
     IntStringVector intStringVector;
     IntStringVector[] soundBankCollection;
     IntStringVector isv_AllAvaliSounds;
-
     private int soundBankNumber;
 
 
@@ -29,7 +30,7 @@ public class ConfigureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_configure);
         Intent intent = getIntent();
         isv_AllAvaliSounds = intent.getParcelableExtra("theIntStringVector");
-        soundBankNumber = intent.getParcelableExtra("soundBankNumber");
+        soundBankNumber = intent.getIntExtra("soundBankNumber", 0);
         soundBankCollection = new IntStringVector[10];
         soundBankCollection[0] = intent.getParcelableExtra("soundbank_0");
         soundBankCollection[1] = intent.getParcelableExtra("soundbank_1");
