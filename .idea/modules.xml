@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OpenCV_EdgeDetect001.iml" filepath="$PROJECT_DIR$/OpenCV_EdgeDetect001.iml" />
+      <module fileurl="file://C:\Users\Fredrik\AndroidStudioProjects\colorBlobDetectionBeta\OpenCV_EdgeDetect001.iml" filepath="C:\Users\Fredrik\AndroidStudioProjects\colorBlobDetectionBeta\OpenCV_EdgeDetect001.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/colorBlobDetectionBeta.iml" filepath="$PROJECT_DIR$/colorBlobDetectionBeta.iml" />
       <module fileurl="file://$PROJECT_DIR$/openCVLibrary331/openCVLibrary331.iml" filepath="$PROJECT_DIR$/openCVLibrary331/openCVLibrary331.iml" />
     </modules>
   </component>
