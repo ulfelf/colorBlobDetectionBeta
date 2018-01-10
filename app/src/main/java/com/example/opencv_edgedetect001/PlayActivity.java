@@ -45,6 +45,7 @@ These are needed in the manifest:
 
 public class PlayActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
 
+
     private CameraBridgeViewBase mOpenCvCameraView;
     private boolean alreadyWritten = false;
     private boolean alreadyRead = false;
@@ -167,6 +168,8 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         //Register the reciever for local implicit (non directed) Intents. Works like an EventHandler, but captures Intents in stead of Events.
         LocalBroadcastManager.getInstance(this).registerReceiver(aBroadcastRecieverForRGB, new IntentFilter("trigger_aBroadcastRecieverForRGB"));
         sampleArea = new Rect(10,10,2,2);
+
+        soundssound = new int[4];
     }
 
 
@@ -267,16 +270,21 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         //6:long hihat
         //7;short hihat
         //8:bass
+
+        
         int soundIndex = 0;
         if(detectAColor(red, green, blue, 5.0)==detectedColor.DET_RED){
-            soundIndex = 1;
+            soundIndex = 2;
         }else if(detectAColor(red, green, blue, 5.0)==detectedColor.DET_GREEN){
-            soundIndex = 6;
+            soundIndex = 3;
         }else if(detectAColor(red, green, blue, 5.0)==detectedColor.DET_BLUE){
-            soundIndex = 7;
+            soundIndex = 4;
         }else{
             soundIndex = 0;
         }
+
+
+
         //soundIndex = 8;
         /*String debugString = "Renpenis: "+
                 isv_AllAvaliSounds.getShortSoundName(soundIndex) + ", " +
