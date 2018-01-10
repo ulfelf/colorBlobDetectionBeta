@@ -80,7 +80,19 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
     @Override
     public void onBackPressed() {
         //ToDo: what happends when back button is pressed?
-        return;
+        Intent goToMain = new Intent(this, MenuActivity.class);
+        goToMain.putExtra("theIntStringVector", isv_AllAvaliSounds);
+        goToMain.putExtra("soundbank_0",soundBankCollection[0]);
+        goToMain.putExtra("soundbank_1",soundBankCollection[1]);
+        goToMain.putExtra("soundbank_2",soundBankCollection[2]);
+        goToMain.putExtra("soundbank_3",soundBankCollection[3]);
+        goToMain.putExtra("soundbank_4",soundBankCollection[4]);
+        goToMain.putExtra("soundbank_5",soundBankCollection[5]);
+        goToMain.putExtra("soundbank_6",soundBankCollection[6]);
+        goToMain.putExtra("soundbank_7",soundBankCollection[7]);
+        goToMain.putExtra("soundbank_8",soundBankCollection[8]);
+        goToMain.putExtra("soundbank_9",soundBankCollection[9]);
+        startActivity(goToMain);
     }
 
 
