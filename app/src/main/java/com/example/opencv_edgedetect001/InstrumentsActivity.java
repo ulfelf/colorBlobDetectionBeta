@@ -39,6 +39,7 @@ public class InstrumentsActivity extends AppCompatActivity {
     ImageView clicktosave;
     ImageView clicktosaveinstruments;
     ImageView clicktoplay;
+    private int soundBankNumber=0;
 
     List<Integer> shapeList = new ArrayList();
     List<Integer> instrumentList = new ArrayList();
@@ -49,38 +50,40 @@ public class InstrumentsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //ToDo: what happends when back button is pressed?
-        Intent goToMain = new Intent(this, MenuActivity.class);
-        goToMain.putExtra("theIntStringVector", isv_AllAvaliSounds);
-        goToMain.putExtra("soundbank_0",soundBankCollection[0]);
-        goToMain.putExtra("soundbank_1",soundBankCollection[1]);
-        goToMain.putExtra("soundbank_2",soundBankCollection[2]);
-        goToMain.putExtra("soundbank_3",soundBankCollection[3]);
-        goToMain.putExtra("soundbank_4",soundBankCollection[4]);
-        goToMain.putExtra("soundbank_5",soundBankCollection[5]);
-        goToMain.putExtra("soundbank_6",soundBankCollection[6]);
-        goToMain.putExtra("soundbank_7",soundBankCollection[7]);
-        goToMain.putExtra("soundbank_8",soundBankCollection[8]);
-        goToMain.putExtra("soundbank_9",soundBankCollection[9]);
-        startActivity(goToMain);
+        Intent intent = new Intent(this, MenuActivity.class);
+        intent.putExtra("theIntStringVector", isv_AllAvaliSounds);
+        intent.putExtra("soundBankNumber",soundBankNumber);
+        intent.putExtra("soundbank_0",soundBankCollection[0]);
+        intent.putExtra("soundbank_1",soundBankCollection[1]);
+        intent.putExtra("soundbank_2",soundBankCollection[2]);
+        intent.putExtra("soundbank_3",soundBankCollection[3]);
+        intent.putExtra("soundbank_4",soundBankCollection[4]);
+        intent.putExtra("soundbank_5",soundBankCollection[5]);
+        intent.putExtra("soundbank_6",soundBankCollection[6]);
+        intent.putExtra("soundbank_7",soundBankCollection[7]);
+        intent.putExtra("soundbank_8",soundBankCollection[8]);
+        intent.putExtra("soundbank_9",soundBankCollection[9]);
+        startActivity(intent);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent getenGoran = getIntent();
-        isv_AllAvaliSounds = getenGoran.getParcelableExtra("theIntStringVector");
+        Intent intent = getIntent();
+        isv_AllAvaliSounds = intent.getParcelableExtra("theIntStringVector");
+        soundBankNumber = intent.getParcelableExtra("soundBankNumber");
         soundBankCollection = new IntStringVector[10];
-        soundBankCollection[0] = getenGoran.getParcelableExtra("soundbank_0");
-        soundBankCollection[1] = getenGoran.getParcelableExtra("soundbank_1");
-        soundBankCollection[2] = getenGoran.getParcelableExtra("soundbank_2");
-        soundBankCollection[3] = getenGoran.getParcelableExtra("soundbank_3");
-        soundBankCollection[4] = getenGoran.getParcelableExtra("soundbank_4");
-        soundBankCollection[5] = getenGoran.getParcelableExtra("soundbank_5");
-        soundBankCollection[6] = getenGoran.getParcelableExtra("soundbank_6");
-        soundBankCollection[7] = getenGoran.getParcelableExtra("soundbank_7");
-        soundBankCollection[8] = getenGoran.getParcelableExtra("soundbank_8");
-        soundBankCollection[9] = getenGoran.getParcelableExtra("soundbank_9");
+        soundBankCollection[0] = intent.getParcelableExtra("soundbank_0");
+        soundBankCollection[1] = intent.getParcelableExtra("soundbank_1");
+        soundBankCollection[2] = intent.getParcelableExtra("soundbank_2");
+        soundBankCollection[3] = intent.getParcelableExtra("soundbank_3");
+        soundBankCollection[4] = intent.getParcelableExtra("soundbank_4");
+        soundBankCollection[5] = intent.getParcelableExtra("soundbank_5");
+        soundBankCollection[6] = intent.getParcelableExtra("soundbank_6");
+        soundBankCollection[7] = intent.getParcelableExtra("soundbank_7");
+        soundBankCollection[8] = intent.getParcelableExtra("soundbank_8");
+        soundBankCollection[9] = intent.getParcelableExtra("soundbank_9");
 
         setContentView(R.layout.activity_instruments);
 

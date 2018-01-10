@@ -58,6 +58,7 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
     double detectionAreatHeight = 50.0;
     int sampleAreatHeight = 15;
     int sampleAreatWidth = 15;
+    int soundBankNumber = 0;
 
     SoundPool soundPool;
     IntStringVector isv_AllAvaliSounds;
@@ -72,27 +73,39 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
     int soundDelay; //Tidsfördröjning i milisekunder
 
     public void goToConfigActivity(View view) {
-        Intent goToConfig = new Intent(this, ConfigureActivity.class);
-        goToConfig.putExtra("theIntStringVector", isv_AllAvaliSounds);
-        startActivity(goToConfig);
+        Intent intent = new Intent(this, ConfigureActivity.class);
+        intent.putExtra("theIntStringVector", isv_AllAvaliSounds);
+        intent.putExtra("soundBankNumber",soundBankNumber);
+        intent.putExtra("soundbank_0",soundBankCollection[0]);
+        intent.putExtra("soundbank_1",soundBankCollection[1]);
+        intent.putExtra("soundbank_2",soundBankCollection[2]);
+        intent.putExtra("soundbank_3",soundBankCollection[3]);
+        intent.putExtra("soundbank_4",soundBankCollection[4]);
+        intent.putExtra("soundbank_5",soundBankCollection[5]);
+        intent.putExtra("soundbank_6",soundBankCollection[6]);
+        intent.putExtra("soundbank_7",soundBankCollection[7]);
+        intent.putExtra("soundbank_8",soundBankCollection[8]);
+        intent.putExtra("soundbank_9",soundBankCollection[9]);
+        startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
         //ToDo: what happends when back button is pressed?
-        Intent goToMain = new Intent(this, MenuActivity.class);
-        goToMain.putExtra("theIntStringVector", isv_AllAvaliSounds);
-        goToMain.putExtra("soundbank_0",soundBankCollection[0]);
-        goToMain.putExtra("soundbank_1",soundBankCollection[1]);
-        goToMain.putExtra("soundbank_2",soundBankCollection[2]);
-        goToMain.putExtra("soundbank_3",soundBankCollection[3]);
-        goToMain.putExtra("soundbank_4",soundBankCollection[4]);
-        goToMain.putExtra("soundbank_5",soundBankCollection[5]);
-        goToMain.putExtra("soundbank_6",soundBankCollection[6]);
-        goToMain.putExtra("soundbank_7",soundBankCollection[7]);
-        goToMain.putExtra("soundbank_8",soundBankCollection[8]);
-        goToMain.putExtra("soundbank_9",soundBankCollection[9]);
-        startActivity(goToMain);
+        Intent intent = new Intent(this, MenuActivity.class);
+        intent.putExtra("theIntStringVector", isv_AllAvaliSounds);
+        intent.putExtra("soundBankNumber",soundBankNumber);
+        intent.putExtra("soundbank_0",soundBankCollection[0]);
+        intent.putExtra("soundbank_1",soundBankCollection[1]);
+        intent.putExtra("soundbank_2",soundBankCollection[2]);
+        intent.putExtra("soundbank_3",soundBankCollection[3]);
+        intent.putExtra("soundbank_4",soundBankCollection[4]);
+        intent.putExtra("soundbank_5",soundBankCollection[5]);
+        intent.putExtra("soundbank_6",soundBankCollection[6]);
+        intent.putExtra("soundbank_7",soundBankCollection[7]);
+        intent.putExtra("soundbank_8",soundBankCollection[8]);
+        intent.putExtra("soundbank_9",soundBankCollection[9]);
+        startActivity(intent);
     }
 
 
@@ -135,6 +148,7 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         soundBankCollection = new IntStringVector[10];
         Intent getenGoran = getIntent();
         isv_AllAvaliSounds = getenGoran.getParcelableExtra("theIntStringVector");
+        soundBankNumber = getenGoran.getParcelableExtra("soundBankNumber");
         soundBankCollection[0] = getenGoran.getParcelableExtra("soundbank_0");
         soundBankCollection[1] = getenGoran.getParcelableExtra("soundbank_1");
         soundBankCollection[2] = getenGoran.getParcelableExtra("soundbank_2");
@@ -276,14 +290,13 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         }else{
             colorIndex = 0;
         }
-        int soundIndex = 0;
         int activeSoundBank = 0;
         for(int i=0;i<soundBankCollection[activeSoundBank].length();i++){
             if(colorIndex==soundBankCollection[activeSoundBank].getDetectColor(i)){
-                soundIndex = soundBankCollection[activeSoundBank].getDetectColor(i);
+                soundBankNumber = soundBankCollection[activeSoundBank].getDetectColor(i);
             }
         }
-        soundPool.play(isv_AllAvaliSounds.getSoundPoolId(soundIndex),1,1,1,0,1);
+        soundPool.play(isv_AllAvaliSounds.getSoundPoolId(soundBankNumber),1,1,1,0,1);
                 /*String debugString = "Renpenis: "+
                 isv_AllAvaliSounds.getShortSoundName(soundIndex) + ", " +
                 isv_AllAvaliSounds.getOctave(soundIndex) + ", " +

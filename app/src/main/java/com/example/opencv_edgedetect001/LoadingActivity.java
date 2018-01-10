@@ -107,6 +107,7 @@ public class LoadingActivity extends AppCompatActivity {
                 //All is loaded, move to next activity
                 Intent goToMain = new Intent(thisContext, MenuActivity.class);
                 goToMain.putExtra("theIntStringVector", isv_AllAvaliSounds);
+                goToMain.putExtra("soundBankNumber",0);
                 goToMain.putExtra("soundbank_0",soundBankCollection[0]);
                 goToMain.putExtra("soundbank_1",soundBankCollection[1]);
                 goToMain.putExtra("soundbank_2",soundBankCollection[2]);
