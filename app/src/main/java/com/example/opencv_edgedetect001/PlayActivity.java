@@ -278,13 +278,13 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
             soundIndex = 0;
         }
         //soundIndex = 8;
-        String debugString = "Renpenis: "+
+        /*String debugString = "Renpenis: "+
                 isv_AllAvaliSounds.getShortSoundName(soundIndex) + ", " +
                 isv_AllAvaliSounds.getOctave(soundIndex) + ", " +
                 isv_AllAvaliSounds.getTone(soundIndex) + ", " +
                 isv_AllAvaliSounds.isItSharp(soundIndex);
         System.out.println(debugString);
-        ((TextView)findViewById(R.id.textFelt)).setText(((TextView)findViewById(R.id.textFelt)).getText()+debugString);
+        ((TextView)findViewById(R.id.textFelt)).setText(((TextView)findViewById(R.id.textFelt)).getText()+debugString);*/
         soundPool.play(isv_AllAvaliSounds.getSoundPoolId(soundIndex),1,1,1,0,1);
     }
 

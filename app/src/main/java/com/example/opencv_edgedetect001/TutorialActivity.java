@@ -22,10 +22,11 @@ public class TutorialActivity extends AppCompatActivity {
     IntStringVector[] soundBankCollection;
     IntStringVector isv_AllAvaliSounds;
 
-    static ImageView phone;
+    public ImageView phone;
     static int counter = 0;
     static int viewLocation[] = {0,0};
-    static ArrayList<ImageView> dots = new ArrayList<>();
+    public ArrayList<ImageView> dots = new ArrayList<>();
+    final Handler handler = new Handler();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,12 +57,12 @@ public class TutorialActivity extends AppCompatActivity {
 
         handler.post(r);
 
-        play.findViewById(R.id.ib_play);
-        instrumentTutorial.findViewById(R.id.ib_instrument_tutorial);
+        play = findViewById(R.id.ib_play);
+        instrumentTutorial = findViewById(R.id.ib_instrument_tutorial);
 
     }
 
-    final Handler handler = new Handler();
+
     final Runnable r = new Runnable()
     {
         public void run()

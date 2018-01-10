@@ -11,13 +11,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gigamole.infinitecycleviewpager.VerticalInfiniteCycleViewPager;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Fredrik on 1/9/2018.
  */
 
 public class InstrumentsActivity extends AppCompatActivity {
+
+    //TODO lägg till cycle views
 
     boolean isTutorial = false;
     int tutorialstate = 0;
@@ -35,9 +40,12 @@ public class InstrumentsActivity extends AppCompatActivity {
     ImageView clicktosaveinstruments;
     ImageView clicktoplay;
 
+    List<Integer> shapeList = new ArrayList();
+    List<Integer> instrumentList = new ArrayList();
+
     IntStringVector[]  soundBankCollection;
     IntStringVector isv_AllAvaliSounds;
-    
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,8 +95,34 @@ public class InstrumentsActivity extends AppCompatActivity {
                 }
             });
         }
-        //isTutorial måste ha samma värde som den parameter som skickas in isTutorial = inparameter;
+
+        populateShapes();
+        populateInstruments();
+
+        VerticalInfiniteCycleViewPager firstPager = (VerticalInfiniteCycleViewPager) findViewById(R.id.first_cycler);
+        CycleAdapter firstCycleAdapter = new CycleAdapter(shapeList, getBaseContext());
+        firstPager.setAdapter(firstCycleAdapter);
+
+        VerticalInfiniteCycleViewPager secondPager = (VerticalInfiniteCycleViewPager) findViewById(R.id.second_cycler);
+        CycleAdapter secondCycleAdapter = new CycleAdapter(instrumentList, getBaseContext());
+        secondPager.setAdapter(secondCycleAdapter);
+
     }
+    private void populateInstruments() {
+        instrumentList.add(R.drawable.trumpet);
+        instrumentList.add(R.drawable.drum);
+        instrumentList.add(R.drawable.piano);
+        instrumentList.add(R.drawable.cat);
+    }
+
+    private void populateShapes() {
+        shapeList.add(R.drawable.circle_blue);
+        shapeList.add(R.drawable.circle_green);
+        shapeList.add(R.drawable.circle_red);
+        shapeList.add(R.drawable.circle_black);
+    }
+        //isTutorial måste ha samma värde som den parameter som skickas in isTutorial = inparameter;
+
 
     void checkTutorialstate()
     {
