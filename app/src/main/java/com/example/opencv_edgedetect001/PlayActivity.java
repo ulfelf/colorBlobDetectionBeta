@@ -283,21 +283,25 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
     public void playASound(double red, double green, double blue){
         int colorIndex = 0;
         if(detectAColor(red, green, blue, 5.0)==detectedColor.DET_RED){
-            colorIndex = 1;
+            colorIndex = 2;
+            //blå grön röd svart
         }else if(detectAColor(red, green, blue, 5.0)==detectedColor.DET_GREEN){
-            colorIndex = 6;
+            colorIndex = 1;
         }else if(detectAColor(red, green, blue, 5.0)==detectedColor.DET_BLUE){
-            colorIndex = 7;
-        }else{
             colorIndex = 0;
+        }else{
+            colorIndex = 3;
         }
+        /*
         int activeSoundBank = 0;
         for(int i=0;i<soundBankCollection[activeSoundBank].length();i++){
             if(colorIndex==soundBankCollection[activeSoundBank].getDetectColor(i)){
                 soundBankNumber = soundBankCollection[activeSoundBank].getDetectColor(i);
             }
         }
-        soundPool.play(isv_AllAvaliSounds.getSoundPoolId(soundBankNumber),1,1,1,0,1);
+        */
+        //soundPool.play(isv_AllAvaliSounds.getSoundPoolId(soundBankNumber),1,1,1,0,1);
+        soundPool.play(soundBankCollection[0].getSoundPoolId(colorIndex),1,1,1,0,1);
                 /*String debugString = "Renpenis: "+
                 isv_AllAvaliSounds.getShortSoundName(soundIndex) + ", " +
                 isv_AllAvaliSounds.getOctave(soundIndex) + ", " +
