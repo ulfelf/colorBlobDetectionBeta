@@ -55,7 +55,7 @@ public class TutorialActivity extends AppCompatActivity {
         setContentView(R.layout.tutorial_howtoplay);
         Intent intent = getIntent();
         isv_AllAvaliSounds = intent.getParcelableExtra("theIntStringVector");
-        soundBankNumber = intent.getParcelableExtra("soundBankNumber");
+        soundBankNumber = intent.getIntExtra("soundBankNumber",0);
         soundBankCollection = new IntStringVector[10];
         soundBankCollection[0] = intent.getParcelableExtra("soundbank_0");
         soundBankCollection[1] = intent.getParcelableExtra("soundbank_1");

@@ -146,19 +146,19 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         //ulfulf
         //intStringVector = soundKeeper.getIntStringVector();
         soundBankCollection = new IntStringVector[10];
-        Intent getenGoran = getIntent();
-        isv_AllAvaliSounds = getenGoran.getParcelableExtra("theIntStringVector");
-        soundBankNumber = getenGoran.getParcelableExtra("soundBankNumber");
-        soundBankCollection[0] = getenGoran.getParcelableExtra("soundbank_0");
-        soundBankCollection[1] = getenGoran.getParcelableExtra("soundbank_1");
-        soundBankCollection[2] = getenGoran.getParcelableExtra("soundbank_2");
-        soundBankCollection[3] = getenGoran.getParcelableExtra("soundbank_3");
-        soundBankCollection[4] = getenGoran.getParcelableExtra("soundbank_4");
-        soundBankCollection[5] = getenGoran.getParcelableExtra("soundbank_5");
-        soundBankCollection[6] = getenGoran.getParcelableExtra("soundbank_6");
-        soundBankCollection[7] = getenGoran.getParcelableExtra("soundbank_7");
-        soundBankCollection[8] = getenGoran.getParcelableExtra("soundbank_8");
-        soundBankCollection[9] = getenGoran.getParcelableExtra("soundbank_9");
+        Intent intent = getIntent();
+        isv_AllAvaliSounds = intent.getParcelableExtra("theIntStringVector");
+        soundBankNumber = intent.getIntExtra("soundBankNumber",0);
+        soundBankCollection[0] = intent.getParcelableExtra("soundbank_0");
+        soundBankCollection[1] = intent.getParcelableExtra("soundbank_1");
+        soundBankCollection[2] = intent.getParcelableExtra("soundbank_2");
+        soundBankCollection[3] = intent.getParcelableExtra("soundbank_3");
+        soundBankCollection[4] = intent.getParcelableExtra("soundbank_4");
+        soundBankCollection[5] = intent.getParcelableExtra("soundbank_5");
+        soundBankCollection[6] = intent.getParcelableExtra("soundbank_6");
+        soundBankCollection[7] = intent.getParcelableExtra("soundbank_7");
+        soundBankCollection[8] = intent.getParcelableExtra("soundbank_8");
+        soundBankCollection[9] = intent.getParcelableExtra("soundbank_9");
 
         for(int i=0;i<soundBankCollection.length;i++){
             for(int u=0;u<soundBankCollection[i].length();u++) {
