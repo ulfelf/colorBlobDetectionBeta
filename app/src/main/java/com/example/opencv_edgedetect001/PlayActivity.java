@@ -45,7 +45,6 @@ These are needed in the manifest:
 
 public class PlayActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
 
-
     private CameraBridgeViewBase mOpenCvCameraView;
     private boolean alreadyWritten = false;
     private boolean alreadyRead = false;
@@ -180,8 +179,6 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         //Register the reciever for local implicit (non directed) Intents. Works like an EventHandler, but captures Intents in stead of Events.
         LocalBroadcastManager.getInstance(this).registerReceiver(aBroadcastRecieverForRGB, new IntentFilter("trigger_aBroadcastRecieverForRGB"));
         sampleArea = new Rect(10,10,2,2);
-
-        soundssound = new int[4];
     }
 
 
@@ -269,44 +266,33 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
     //It needs some work.
     //ToDo: talk to SwedFred
     public void playASound(double red, double green, double blue){
-        double marginOfColor = 10.0;
-        double[] kickRed = {55.0,3.0,16.0};
-        double[] snareBlue = {17.0,36.0,73.0};
-        double [] hihatGreen = {0.0,80.0,60.0};
-        //0: kick
-        //1:snare
-        //2:orgel-grej
-        //3:orgel
-        //4:ack
-        //5:org
-        //6:long hihat
-        //7;short hihat
-        //8:bass
-
-        
-        int soundIndex = 0;
+        int colorIndex = 0;
         if(detectAColor(red, green, blue, 5.0)==detectedColor.DET_RED){
-            soundIndex = 2;
+            colorIndex = 1;
         }else if(detectAColor(red, green, blue, 5.0)==detectedColor.DET_GREEN){
-            soundIndex = 3;
+            colorIndex = 6;
         }else if(detectAColor(red, green, blue, 5.0)==detectedColor.DET_BLUE){
-            soundIndex = 4;
+            colorIndex = 7;
         }else{
-            soundIndex = 0;
+            colorIndex = 0;
         }
-
-
-
-        //soundIndex = 8;
-        /*String debugString = "Renpenis: "+
+        int soundIndex = 0;
+        int activeSoundBank = 0;
+        for(int i=0;i<soundBankCollection[activeSoundBank].length();i++){
+            if(colorIndex==soundBankCollection[activeSoundBank].getDetectColor(i)){
+                soundIndex = soundBankCollection[activeSoundBank].getDetectColor(i);
+            }
+        }
+        soundPool.play(isv_AllAvaliSounds.getSoundPoolId(soundIndex),1,1,1,0,1);
+                /*String debugString = "Renpenis: "+
                 isv_AllAvaliSounds.getShortSoundName(soundIndex) + ", " +
                 isv_AllAvaliSounds.getOctave(soundIndex) + ", " +
                 isv_AllAvaliSounds.getTone(soundIndex) + ", " +
                 isv_AllAvaliSounds.isItSharp(soundIndex);
         System.out.println(debugString);
         ((TextView)findViewById(R.id.textFelt)).setText(((TextView)findViewById(R.id.textFelt)).getText()+debugString);*/
-        soundPool.play(isv_AllAvaliSounds.getSoundPoolId(soundIndex),1,1,1,0,1);
     }
+
 
     //check if a color value from the camera is an expected value or not.
     //This function needs a lot of work.
