@@ -286,8 +286,10 @@ public class InstrumentsActivity extends AppCompatActivity {
         CharSequence text = "Coming in a future update!";
         int duration = Toast.LENGTH_SHORT;
 
+        /*
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+        */
 
         int colorID = shapeList.get(firstPager.getRealItem()); //ResourceID för shape/color
         int instrumentImageResID = instrumentList.get(secondPager.getRealItem()); //ResourceID för Instrument
@@ -319,15 +321,6 @@ public class InstrumentsActivity extends AppCompatActivity {
         int sourceIndex = isv_AllAvaliSounds.getIndexForResourceName(imageName);
         soundBankCollection[0].replaceElement(firstPager.getRealItem(), isv_AllAvaliSounds, sourceIndex);
         soundBankCollection[0].setDetectColor(firstPager.getRealItem(), firstPager.getRealItem());
-        /*
-        int troligtresursvarde = 1;
-        String bildnamn = "shortbass_2_c_s";
-        soundBankCollection[0].setDetectColor(0, 0);
-        soundBankCollection[0].setResourceID(0,0);
-        //soundBankCollection[0].setSoundPoolId(isv_AllAvaliSounds.get)
-
-         */
-
     }
 
     public void resetCombination(View view) {

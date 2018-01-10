@@ -1,6 +1,8 @@
 package com.example.opencv_edgedetect001;
 
-
+/**
+ * Created by blandfars on 2018-01-10.
+ */
 
 import android.content.Context;
 import android.os.Environment;
@@ -199,7 +201,6 @@ public class FileTool {
                         someWriter.write("<maxThreshold>220.</maxThreshold>\n");
 someWriter.write("<minArea>1800.</minArea>\n");
                         someWriter.write("<maxArea>7000.</maxArea>\n");
-
      */
 
 
@@ -537,8 +538,8 @@ someWriter.write("<minArea>1800.</minArea>\n");
                 */
                 tempSoundName =
                         nodes_shortSoundName.item(i).getTextContent()+"_"+
-                        nodes_octave.item(i).getTextContent()+"_"+
-                        nodes_tone.item(i).getTextContent();
+                                nodes_octave.item(i).getTextContent()+"_"+
+                                nodes_tone.item(i).getTextContent();
                 if(Boolean.valueOf(nodes_isSharp.item(i).getTextContent())){
                     tempSoundName = tempSoundName + "_s";
                 }

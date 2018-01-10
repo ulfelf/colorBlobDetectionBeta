@@ -1,5 +1,9 @@
 package com.example.opencv_edgedetect001;
 
+/**
+ * Created by blandfars on 2018-01-10.
+ */
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

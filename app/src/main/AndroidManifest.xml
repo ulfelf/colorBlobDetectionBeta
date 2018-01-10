@@ -23,27 +23,12 @@
 
         </activity>
         <activity
-            android:name=".CameraGuy"
-            android:screenOrientation="landscape"/>
-        <activity
-            android:screenOrientation="landscape"
-            android:name=".balloonActivity"
-            android:label="@string/title_activity_balloon"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
             android:name=".PlayActivity"
             android:screenOrientation="landscape">
 
         </activity>
         <activity
             android:name=".ConfigureActivity"
-            android:screenOrientation="landscape">
-
-        </activity>
-        <activity
-            android:name=".TestingActivity"
             android:screenOrientation="landscape">
 
         </activity>
