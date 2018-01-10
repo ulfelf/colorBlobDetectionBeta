@@ -280,6 +280,26 @@ public class IntStringVector implements Parcelable{
         }
     }
 
+    public void replaceElement(int indexOfElementToBeReplaced, IntStringVector source, int sourceIndex){
+        resourceID[indexOfElementToBeReplaced] = source.getResouceID(sourceIndex);
+        soundPoolID[indexOfElementToBeReplaced] = source.getSoundPoolId(sourceIndex);
+        resourceName[indexOfElementToBeReplaced] = source.getResouceName(sourceIndex);
+        shortSoundName[indexOfElementToBeReplaced] = source.getShortSoundName(sourceIndex);
+        octave[indexOfElementToBeReplaced] = source.getOctave(sourceIndex);
+        tone[indexOfElementToBeReplaced] = source.getTone(sourceIndex);
+        isSharp[indexOfElementToBeReplaced] = source.isItSharp(sourceIndex);
+        detectColor[indexOfElementToBeReplaced] = source.getDetectColor(sourceIndex);
+    }
+
+    public int getIndexForResourceName(String resName){
+        int retVal = -1;
+        for(int i=0;i<this.length();i++){
+            if(this.getResouceName(i).equals(resName)){
+                return i;
+            }
+        }
+        return retVal;
+    }
 
     /*
     //ToDo: används denna över huvud taget?
