@@ -193,6 +193,7 @@ public class PlayActivity extends AppCompatActivity implements CameraBridgeViewB
         //Register the reciever for local implicit (non directed) Intents. Works like an EventHandler, but captures Intents in stead of Events.
         LocalBroadcastManager.getInstance(this).registerReceiver(aBroadcastRecieverForRGB, new IntentFilter("trigger_aBroadcastRecieverForRGB"));
         sampleArea = new Rect(10,10,2,2);
+
     }
 
 

@@ -99,7 +99,7 @@ public class FileTool {
         for(int i=0;i<resourceIds.length;i++){
             retVal.add(resourceIds[i], -1, resourceNames[i]);
             //ToDo: ta bort felsökningsraden
-            Log.i("Ljudfil: "+resourceNames[i], String.valueOf(resourceIds[i]));
+            //Log.i("Ljudfil: "+resourceNames[i], String.valueOf(resourceIds[i]));
         }
         return retVal;
     }

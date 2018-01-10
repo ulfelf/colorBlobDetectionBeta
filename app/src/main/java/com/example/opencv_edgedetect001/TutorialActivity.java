@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class TutorialActivity extends AppCompatActivity {
 
+    boolean booltosendtoinstrumentstotellitwhetherornotitstutorialtime;
     ImageButton play;
     ImageButton instrumentTutorial;
     IntStringVector[] soundBankCollection;
@@ -119,7 +120,9 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     public void gotoTutorial(View view) {
+
         Intent intent = new Intent(this, InstrumentsActivity.class);
+        intent.putExtra("booltosendtoinstrumentstotellitwhetherornotitstutorialtime", true);
         intent.putExtra("theIntStringVector", isv_AllAvaliSounds);
         intent.putExtra("soundBankNumber",soundBankNumber);
         intent.putExtra("soundbank_0",soundBankCollection[0]);

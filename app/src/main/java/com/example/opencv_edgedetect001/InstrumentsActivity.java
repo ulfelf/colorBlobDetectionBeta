@@ -1,15 +1,18 @@
 package com.example.opencv_edgedetect001;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gigamole.infinitecycleviewpager.VerticalInfiniteCycleViewPager;
 
@@ -25,7 +28,7 @@ public class InstrumentsActivity extends AppCompatActivity {
     //TODO lägg till cycle views
 
     boolean isTutorial = false;
-    int tutorialstate = 0;
+    int tutorialstate = 1;
     TextView tutText;
     Button okButton;
     FrameLayout tutorialFrame;
@@ -40,6 +43,11 @@ public class InstrumentsActivity extends AppCompatActivity {
     ImageView clicktosaveinstruments;
     ImageView clicktoplay;
     private int soundBankNumber=0;
+
+    VerticalInfiniteCycleViewPager firstPager;
+    CycleAdapter firstCycleAdapter;
+    VerticalInfiniteCycleViewPager secondPager;
+    CycleAdapter secondCycleAdapter;
 
     List<Integer> shapeList = new ArrayList();
     List<Integer> instrumentList = new ArrayList();
@@ -70,7 +78,19 @@ public class InstrumentsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        doThis();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        doThis();
+    }
+
+    private void doThis() {
         Intent intent = getIntent();
+        isTutorial = intent.getBooleanExtra("booltosendtoinstrumentstotellitwhetherornotitstutorialtime", false);
         isv_AllAvaliSounds = intent.getParcelableExtra("theIntStringVector");
         soundBankNumber = intent.getIntExtra("soundBankNumber",0);
         soundBankCollection = new IntStringVector[10];
@@ -93,7 +113,7 @@ public class InstrumentsActivity extends AppCompatActivity {
         ibOpen = findViewById(R.id.ib_load);
         ibSave = findViewById(R.id.ib_save);
 
-        TextView tutText = findViewById(R.id.tutorialText);
+        TextView tutText = (TextView) findViewById(R.id.tutorialText);
         Button okButton = findViewById(R.id.b_tut_ok);
         FrameLayout tutorialFrame = findViewById(R.id.invisibleFrame);
 
@@ -103,7 +123,7 @@ public class InstrumentsActivity extends AppCompatActivity {
         clicktosaveinstruments = findViewById(R.id.img_tut_clicktosave);
         clicktoplay = findViewById(R.id.img_tut_clicktoplay);
 
-        if (tutorialstate == 1)
+        if (isTutorial == true)
         {
             okButton.setVisibility(View.VISIBLE);
             tutorialFrame.setVisibility(View.VISIBLE);
@@ -119,20 +139,45 @@ public class InstrumentsActivity extends AppCompatActivity {
         populateShapes();
         populateInstruments();
 
-        VerticalInfiniteCycleViewPager firstPager = (VerticalInfiniteCycleViewPager) findViewById(R.id.first_cycler);
-        CycleAdapter firstCycleAdapter = new CycleAdapter(shapeList, getBaseContext());
+        firstPager = (VerticalInfiniteCycleViewPager) findViewById(R.id.first_cycler);
+        firstCycleAdapter = new CycleAdapter(shapeList, getBaseContext());
         firstPager.setAdapter(firstCycleAdapter);
 
-        VerticalInfiniteCycleViewPager secondPager = (VerticalInfiniteCycleViewPager) findViewById(R.id.second_cycler);
-        CycleAdapter secondCycleAdapter = new CycleAdapter(instrumentList, getBaseContext());
+        secondPager = (VerticalInfiniteCycleViewPager) findViewById(R.id.second_cycler);
+        secondCycleAdapter = new CycleAdapter(instrumentList, getBaseContext());
         secondPager.setAdapter(secondCycleAdapter);
 
     }
+
     private void populateInstruments() {
-        instrumentList.add(R.drawable.trumpet);
-        instrumentList.add(R.drawable.drum);
-        instrumentList.add(R.drawable.piano);
-        instrumentList.add(R.drawable.cat);
+
+        java.lang.reflect.Field[] rawResources = R.drawable.class.getFields();
+        int[] likelyResourceIds = new int[rawResources.length];
+        String[] likelyResourceNames = new String[rawResources.length];
+        //try getting all filename/resourceid pairs from the resourcefolder "raw"
+        //some of them might be broken.
+        for(int i=0;i<rawResources.length;i++) {
+            likelyResourceNames[i] = rawResources[i].getName();
+            try {
+                likelyResourceIds[i] = rawResources[i].getInt(rawResources[i]);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                likelyResourceIds[i] = -1;
+            }
+        }
+        int count = 0;
+        for(int soundCound=0;soundCound<isv_AllAvaliSounds.length();soundCound++){
+            for(int resourceCount=0;resourceCount<likelyResourceIds.length;resourceCount++) {
+                if (isv_AllAvaliSounds.getResouceName(soundCound).equals(likelyResourceNames[resourceCount])) {
+                    instrumentList.add(likelyResourceIds[resourceCount]);
+                    break;
+                }
+            }
+        }
+        //instrumentList.add(R.drawable.trumpet);
+        //instrumentList.add(R.drawable.drum);
+        //instrumentList.add(R.drawable.piano);
+        //instrumentList.add(R.drawable.cat);
     }
 
     private void populateShapes() {
@@ -151,8 +196,11 @@ public class InstrumentsActivity extends AppCompatActivity {
             playTutorialstate();
         } else
         {
-            tutorialFrame.setVisibility(View.INVISIBLE);
-            okButton.setVisibility(View.INVISIBLE);
+            ((FrameLayout)findViewById(R.id.invisibleFrame)).setVisibility(View.INVISIBLE);
+            //tutorialFrame.setVisibility(View.INVISIBLE);
+            ((Button) findViewById(R.id.b_tut_ok)).setVisibility(View.INVISIBLE);
+            //okButton.setVisibility(View.INVISIBLE);
+            ((ImageView)findViewById(R.id.img_tut_clicktoplay)).setVisibility(View.INVISIBLE);
         }
     }
 
@@ -162,31 +210,39 @@ public class InstrumentsActivity extends AppCompatActivity {
         switch (tutorialstate)
         {
             case 1:
-                tutText.setText(R.string.tutorial_instrument_1);
-                scrollfinger.setVisibility(View.VISIBLE);
+                //tutText.setText(R.string.tutorial_instrument_1);
+                ((TextView)findViewById(R.id.tutorialText)).setText(R.string.tutorial_instrument_1);
+                ((ImageView) findViewById(R.id.img_tut_scrollFinger)).setVisibility(View.VISIBLE);
+                //scrollfinger.setVisibility(View.VISIBLE);
                 break;
             case 2:
-                tutText.setText(R.string.tutorial_instrument_2);
-                scrollfinger.setVisibility(View.INVISIBLE);
+                //tutText.setText(R.string.tutorial_instrument_2);
+                ((TextView)findViewById(R.id.tutorialText)).setText(R.string.tutorial_instrument_2);
+                //scrollfinger.setVisibility(View.INVISIBLE);
+                ((ImageView) findViewById(R.id.img_tut_scrollFinger)).setVisibility(View.INVISIBLE);
                 clicktotrysound.setVisibility(View.VISIBLE);
                 break;
             case 3:
-                tutText.setText(R.string.tutorial_instrument_3);
+                //tutText.setText(R.string.tutorial_instrument_3);
+                ((TextView)findViewById(R.id.tutorialText)).setText(R.string.tutorial_instrument_3);
                 clicktotrysound.setVisibility(View.INVISIBLE);
                 clicktosave.setVisibility(View.VISIBLE);
                 break;
             case 4:
-                tutText.setText(R.string.tutorial_instrument_4);
+                //tutText.setText(R.string.tutorial_instrument_4);
+                ((TextView)findViewById(R.id.tutorialText)).setText(R.string.tutorial_instrument_4);
                 clicktosave.setVisibility(View.INVISIBLE);
                 clicktosaveinstruments.setVisibility(View.VISIBLE);
                 break;
             case 5:
-                tutText.setText(R.string.tutorial_instrument_5);
+                //tutText.setText(R.string.tutorial_instrument_5);
+                ((TextView)findViewById(R.id.tutorialText)).setText(R.string.tutorial_instrument_5);
                 clicktosaveinstruments.setVisibility(View.INVISIBLE);
                 clicktoplay.setVisibility(View.VISIBLE);
                 break;
             default:
-                clicktoplay.setVisibility(View.INVISIBLE);
+                ((ImageView)findViewById(R.id.img_tut_clicktoplay)).setVisibility(View.INVISIBLE);
+                //clicktoplay.setVisibility(View.INVISIBLE);
                 break;
         }
     }
@@ -205,5 +261,85 @@ public class InstrumentsActivity extends AppCompatActivity {
         goToMain.putExtra("soundbank_8",soundBankCollection[8]);
         goToMain.putExtra("soundbank_9",soundBankCollection[9]);
         startActivity(goToMain);
+    }
+
+    public void saveInstrumentSet(View view) {
+        Context context = getApplicationContext();
+        CharSequence text = "Coming in a future update!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    public void loadInstrumentSet(View view) {
+        Context context = getApplicationContext();
+        CharSequence text = "Coming in a future update!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    public void acceptCombination(View view) {
+        Context context = getApplicationContext();
+        CharSequence text = "Coming in a future update!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
+        int colorID = shapeList.get(firstPager.getRealItem()); //ResourceID för shape/color
+        int instrumentImageResID = instrumentList.get(secondPager.getRealItem()); //ResourceID för Instrument
+
+
+        java.lang.reflect.Field[] rawResources = R.drawable.class.getFields();
+        int[] likelyResourceIds = new int[rawResources.length];
+        String[] likelyResourceNames = new String[rawResources.length];
+        //try getting all filename/resourceid pairs from the resourcefolder "raw"
+        //some of them might be broken.
+        for(int i=0;i<rawResources.length;i++) {
+            likelyResourceNames[i] = rawResources[i].getName();
+            try {
+                likelyResourceIds[i] = rawResources[i].getInt(rawResources[i]);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                likelyResourceIds[i] = -1;
+            }
+        }
+        String imageName = "default";
+
+        for(int resourceCount=0;resourceCount<likelyResourceIds.length;resourceCount++) {
+            if(instrumentImageResID == likelyResourceIds[resourceCount]) {
+                //hu har vi fanimej namnet
+                imageName = likelyResourceNames[resourceCount];
+                break;
+            }
+        }
+        int sourceIndex = isv_AllAvaliSounds.getIndexForResourceName(imageName);
+        soundBankCollection[0].replaceElement(firstPager.getRealItem(), isv_AllAvaliSounds, sourceIndex);
+        soundBankCollection[0].setDetectColor(firstPager.getRealItem(), firstPager.getRealItem());
+        /*
+        int troligtresursvarde = 1;
+        String bildnamn = "shortbass_2_c_s";
+        soundBankCollection[0].setDetectColor(0, 0);
+        soundBankCollection[0].setResourceID(0,0);
+        //soundBankCollection[0].setSoundPoolId(isv_AllAvaliSounds.get)
+
+         */
+
+    }
+
+    public void resetCombination(View view) {
+        Context context = getApplicationContext();
+        CharSequence text = "Coming in a future update!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
+
+
+
     }
 }

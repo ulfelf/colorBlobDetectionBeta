@@ -52,6 +52,13 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        doThisNow();
+
+
+    }
+
+    private void doThisNow() {
         thisContext = this;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_loader);
@@ -139,6 +146,12 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        doThisNow();
     }
 
     @Override

@@ -29,6 +29,17 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        heyAfshinWeRanOutOfNames();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        heyAfshinWeRanOutOfNames();
+    }
+
+    private void heyAfshinWeRanOutOfNames() {
+
         Intent intent = getIntent();
         isv_AllAvaliSounds = intent.getParcelableExtra("theIntStringVector");
         soundBankCollection = new IntStringVector[10];
